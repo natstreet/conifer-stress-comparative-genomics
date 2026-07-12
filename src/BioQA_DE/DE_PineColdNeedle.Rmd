@@ -1,0 +1,137 @@
+---
+title: "Differential Expression of pine cold needle samples"
+author: "Elena van Zalen"
+date: '`r format(Sys.time(), "%d.%m.%Y")`'
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+    number_sections: false
+editor_options: 
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup
+```{r libraries,  warning=FALSE, error=FALSE, message=FALSE}
+suppressPackageStartupMessages({
+  library(DESeq2)
+  library(here)
+})
+```
+
+
+```{r DESeq, warning=FALSE, error=FALSE, message=FALSE}
+load(here("data/dds/dds_PCN.rda"))
+
+#' ## Differential Expression
+dds <- DESeq(dds_PCN)
+
+#' * Dispersion estimation
+#' The dispersion estimation is adequate
+plotDispEsts(dds)
+
+#' Check the different contrasts
+resultsNames(dds)
+
+```
+
+## Results
+Generating the DEGenes based on status, treatment and control 0h vs pinch 6h. 
+```{r contrast status, warning=FALSE, error=FALSE, message=FALSE}
+#' DESeq2 will use a filter to remove genes with low expression,
+#' we set as filter the median normalized counts 
+filtered <- rowMedians(counts(dds, normalized=TRUE))
+
+#' We then extract from DESeq2 the results for our contrast of interest.
+contrast_5c_6h <- results(dds, name = "Condition_5C_6h_vs_20C_0h", filter = filtered)
+contrast_5c_24h <- results(dds, name = "Condition_5C_24h_vs_20C_0h", filter = filtered)
+contrast_5c_3d <- results(dds, name = "Condition_5C_3d_vs_20C_0h", filter = filtered)
+contrast_5c_10d <- results(dds, name = "Condition_5C_10d_vs_20C_0h", filter = filtered)
+contrast_neg5c_6h <- results(dds, name = "Condition_neg5C_6h_vs_20C_0h", filter = filtered)
+contrast_neg5c_24h <- results(dds, name = "Condition_neg5C_24h_vs_20C_0h", filter = filtered)
+contrast_neg5c_3d <- results(dds, name = "Condition_neg5C_3d_vs_20C_0h", filter = filtered)
+contrast_neg5c_10d <- results(dds, name = "Condition_neg5C_10d_vs_20C_0h", filter = filtered)
+
+DE_5c_6h <- unique(c(row.names(subset(contrast_5c_6h, contrast_5c_6h$padj < 0.01 & contrast_5c_6h$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_5c_6h, contrast_5c_6h$padj < 0.01 & contrast_5c_6h$log2FoldChange <= -2 ))))
+DE_5c_24h <- unique(c(row.names(subset(contrast_5c_24h, contrast_5c_24h$padj < 0.01 & contrast_5c_24h$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_5c_24h, contrast_5c_24h$padj < 0.01 & contrast_5c_24h$log2FoldChange <= -2 ))))
+DE_5c_3d <- unique(c(row.names(subset(contrast_5c_3d, contrast_5c_3d$padj < 0.01 & contrast_5c_3d$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_5c_3d, contrast_5c_3d$padj < 0.01 & contrast_5c_3d$log2FoldChange <= -2 ))))
+DE_5c_10d <- unique(c(row.names(subset(contrast_5c_10d, contrast_5c_10d$padj < 0.01 & contrast_5c_10d$log2FoldChange >= 2 )),
+                    row.names(subset(contrast_5c_10d, contrast_5c_10d$padj < 0.01 & contrast_5c_10d$log2FoldChange <= -2 ))))
+DE_neg5c_6h <- unique(c(row.names(subset(contrast_neg5c_6h, contrast_neg5c_6h$padj < 0.01 & contrast_neg5c_6h$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_neg5c_6h, contrast_neg5c_6h$padj < 0.01 & contrast_neg5c_6h$log2FoldChange <= -2 ))))
+DE_neg5c_24h <- unique(c(row.names(subset(contrast_neg5c_24h, contrast_neg5c_24h$padj < 0.01 & contrast_neg5c_24h$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_neg5c_24h, contrast_neg5c_24h$padj < 0.01 & contrast_neg5c_24h$log2FoldChange <= -2 ))))
+DE_neg5c_3d <- unique(c(row.names(subset(contrast_neg5c_3d, contrast_neg5c_3d$padj < 0.01 & contrast_neg5c_3d$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_neg5c_3d, contrast_neg5c_3d$padj < 0.01 & contrast_neg5c_3d$log2FoldChange <= -2 ))))
+DE_neg5c_10d <- unique(c(row.names(subset(contrast_neg5c_10d, contrast_neg5c_10d$padj < 0.01 & contrast_neg5c_10d$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_neg5c_10d, contrast_neg5c_10d$padj < 0.01 & contrast_neg5c_10d$log2FoldChange <= -2 ))))
+
+
+DE_all_PCN_01_2L2FC <- unique(c(DE_5c_6h, DE_5c_24h, DE_5c_3d, DE_5c_10d, DE_neg5c_6h, DE_neg5c_24h, DE_neg5c_3d, DE_neg5c_10d))
+
+save(DE_all_PCN_01_2L2FC, file = here("data/DEG_lists/DE_all_PCN_01_2L2FC.RData"))
+
+```
+
+```{r separate up and down for barplots}
+# 5°C contrasts
+DE_5c_6h_up <- row.names(subset(contrast_5c_6h, padj < 0.01 & log2FoldChange >= 2))
+DE_5c_6h_down <- row.names(subset(contrast_5c_6h, padj < 0.01 & log2FoldChange <= -2))
+
+DE_5c_24h_up <- row.names(subset(contrast_5c_24h, padj < 0.01 & log2FoldChange >= 2))
+DE_5c_24h_down <- row.names(subset(contrast_5c_24h, padj < 0.01 & log2FoldChange <= -2))
+
+DE_5c_3d_up <- row.names(subset(contrast_5c_3d, padj < 0.01 & log2FoldChange >= 2))
+DE_5c_3d_down <- row.names(subset(contrast_5c_3d, padj < 0.01 & log2FoldChange <= -2))
+
+DE_5c_10d_up <- row.names(subset(contrast_5c_10d, padj < 0.01 & log2FoldChange >= 2))
+DE_5c_10d_down <- row.names(subset(contrast_5c_10d, padj < 0.01 & log2FoldChange <= -2))
+
+# -5°C contrasts
+DE_neg5c_6h_up <- row.names(subset(contrast_neg5c_6h, padj < 0.01 & log2FoldChange >= 2))
+DE_neg5c_6h_down <- row.names(subset(contrast_neg5c_6h, padj < 0.01 & log2FoldChange <= -2))
+
+DE_neg5c_24h_up <- row.names(subset(contrast_neg5c_24h, padj < 0.01 & log2FoldChange >= 2))
+DE_neg5c_24h_down <- row.names(subset(contrast_neg5c_24h, padj < 0.01 & log2FoldChange <= -2))
+
+DE_neg5c_3d_up <- row.names(subset(contrast_neg5c_3d, padj < 0.01 & log2FoldChange >= 2))
+DE_neg5c_3d_down <- row.names(subset(contrast_neg5c_3d, padj < 0.01 & log2FoldChange <= -2))
+
+DE_neg5c_10d_up <- row.names(subset(contrast_neg5c_10d, padj < 0.01 & log2FoldChange >= 2))
+DE_neg5c_10d_down <- row.names(subset(contrast_neg5c_10d, padj < 0.01 & log2FoldChange <= -2))
+
+```
+
+```{r stacked bar plots}
+
+# Count genes in each group
+deg_counts_pcn <- data.frame(
+  condition = rep(c("5c_6h", "5c_24h", "5c_3d", "5c_10d", "neg5c_6h", "neg5c_24h", "neg5c_3d", "neg5c_10d"), each = 2),
+  regulation = rep(c("Up", "Down"), times = 8),
+  count = c(
+    length(DE_5c_6h_up),   length(DE_5c_6h_down),
+    length(DE_5c_24h_up),  length(DE_5c_24h_down),
+    length(DE_5c_3d_up),   length(DE_5c_3d_down),
+    length(DE_5c_10d_up),  length(DE_5c_10d_down),
+    length(DE_neg5c_6h_up),   length(DE_neg5c_6h_down),
+    length(DE_neg5c_24h_up),  length(DE_neg5c_24h_down),
+    length(DE_neg5c_3d_up),   length(DE_neg5c_3d_down),
+    length(DE_neg5c_10d_up),  length(DE_neg5c_10d_down)))
+
+# Define custom order
+my_order <- c("5c_6h", "5c_24h", "5c_3d", "5c_10d", "neg5c_6h", "neg5c_24h", "neg5c_3d", "neg5c_10d")
+
+deg_counts_pcn$condition <- factor(deg_counts_pcn$condition, levels = my_order) # for the condition order
+deg_counts_pcn$regulation <- factor(deg_counts_pcn$regulation, levels = c("Up", "Down")) # for the bar border
+
+save(deg_counts_pcn, file = here("data/DEG_lists/DEG_BARPLOTcount_PCN_01-2.RData"))
+```

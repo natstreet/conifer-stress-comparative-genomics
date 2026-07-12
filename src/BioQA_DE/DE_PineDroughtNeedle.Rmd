@@ -1,0 +1,130 @@
+---
+title: "Differential Expression of pine drought samples"
+author: "Elena van Zalen"
+date: '`r format(Sys.time(), "%d.%m.%Y")`'
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+    number_sections: false
+editor_options: 
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup
+```{r libraries,  warning=FALSE, error=FALSE, message=FALSE}
+suppressPackageStartupMessages({
+  library(DESeq2)
+  library(here)
+})
+```
+
+
+```{r DESeq, warning=FALSE, error=FALSE, message=FALSE}
+load(here("data/dds/dds_PDN.rda"))
+
+#' ## Differential Expression
+dds <- DESeq(dds_PDN)
+
+#' * Dispersion estimation
+#' The dispersion estimation is adequate
+#plotDispEsts(dds)
+
+#' Check the different contrasts
+resultsNames(dds)
+
+```
+
+## Results
+Generating the DEGenes based on status, treatment and control 0h vs pinch 6h. 
+```{r contrast status, warning=FALSE, error=FALSE, message=FALSE}
+#' DESeq2 will use a filter to remove genes with low expression,
+#' we set as filter the median normalized counts 
+filtered <- rowMedians(counts(dds, normalized=TRUE))
+
+#' We then extract from DESeq2 the results for our contrast of interest.
+contrast_FC60 <- results(dds, name = "Condition_FC60_vs_FC80", filter = filtered)
+contrast_FC40 <- results(dds, name = "Condition_FC40_vs_FC80", filter = filtered)
+contrast_FC30 <- results(dds, name = "Condition_FC30_vs_FC80", filter = filtered)
+contrast_FC30d7 <- results(dds, name = "Condition_FC30d7_vs_FC80", filter = filtered)
+contrast_Coll <- results(dds, name = "Condition_Collapsed_vs_FC80", filter = filtered)
+contrast_C2d <- results(dds, name = "Condition_Collapsed2d_vs_FC80", filter = filtered)
+contrast_Reh <- results(dds, name = "Condition_Rehydrated_vs_FC80", filter = filtered)
+
+
+DE_60 <- unique(c(row.names(subset(contrast_FC60, contrast_FC60$padj < 0.01 & contrast_FC60$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_FC60, contrast_FC60$padj < 0.01 & contrast_FC60$log2FoldChange <= -2 ))))
+DE_40 <- unique(c(row.names(subset(contrast_FC40, contrast_FC40$padj < 0.01 & contrast_FC40$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_FC40, contrast_FC40$padj < 0.01 & contrast_FC40$log2FoldChange <= -2 ))))
+DE_30 <- unique(c(row.names(subset(contrast_FC30, contrast_FC30$padj < 0.01 & contrast_FC30$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_FC30, contrast_FC30$padj < 0.01 & contrast_FC30$log2FoldChange <= -2 ))))
+DE_30d7 <- unique(c(row.names(subset(contrast_FC30d7, contrast_FC30d7$padj < 0.01 & contrast_FC30d7$log2FoldChange >= 2 )),
+                    row.names(subset(contrast_FC30d7, contrast_FC30d7$padj < 0.01 & contrast_FC30d7$log2FoldChange <= -2 ))))
+DE_Coll <- unique(c(row.names(subset(contrast_Coll, contrast_Coll$padj < 0.01 & contrast_Coll$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_Coll, contrast_Coll$padj < 0.01 & contrast_Coll$log2FoldChange <= -2 ))))
+DE_C2d <- unique(c(row.names(subset(contrast_C2d, contrast_C2d$padj < 0.01 & contrast_C2d$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_C2d, contrast_C2d$padj < 0.01 & contrast_C2d$log2FoldChange <= -2 ))))
+DE_Reh <- unique(c(row.names(subset(contrast_Reh, contrast_Reh$padj < 0.01 & contrast_Reh$log2FoldChange >= 2 )),
+                  row.names(subset(contrast_Reh, contrast_Reh$padj < 0.01 & contrast_Reh$log2FoldChange <= -2 ))))
+
+DE_all_PDN_01_2L2FC <- unique(c(DE_60, DE_40, DE_30, DE_30d7, DE_Coll, DE_C2d, DE_Reh))
+
+save(DE_all_PDN_01_2L2FC, file = here("data/DEG_lists/DE_all_PDN_01_2L2FC.RData"))
+
+```
+
+
+```{r separate up and down for barplots}
+# drought contrasts
+DE_60_up <- row.names(subset(contrast_FC60, padj < 0.01 & log2FoldChange >= 2))
+DE_60_down <- row.names(subset(contrast_FC60, padj < 0.01 & log2FoldChange <= -2))
+
+DE_40_up <- row.names(subset(contrast_FC40, padj < 0.01 & log2FoldChange >= 2))
+DE_40_down <- row.names(subset(contrast_FC40, padj < 0.01 & log2FoldChange <= -2))
+
+DE_30_up <- row.names(subset(contrast_FC30, padj < 0.01 & log2FoldChange >= 2))
+DE_30_down <- row.names(subset(contrast_FC30, padj < 0.01 & log2FoldChange <= -2))
+
+DE_30d7_up <- row.names(subset(contrast_FC30d7, padj < 0.01 & log2FoldChange >= 2))
+DE_30d7_down <- row.names(subset(contrast_FC30d7, padj < 0.01 & log2FoldChange <= -2))
+
+DE_Coll_up <- row.names(subset(contrast_Coll, padj < 0.01 & log2FoldChange >= 2))
+DE_Coll_down <- row.names(subset(contrast_Coll, padj < 0.01 & log2FoldChange <= -2))
+
+DE_C2d_up <- row.names(subset(contrast_C2d, padj < 0.01 & log2FoldChange >= 2))
+DE_C2d_down <- row.names(subset(contrast_C2d, padj < 0.01 & log2FoldChange <= -2))
+
+DE_Reh_up <- row.names(subset(contrast_Reh, padj < 0.01 & log2FoldChange >= 2))
+DE_Reh_down <- row.names(subset(contrast_Reh, padj < 0.01 & log2FoldChange <= -2))
+
+```
+
+
+```{r}
+# Count genes in each group
+deg_counts_pdn <- data.frame(
+  condition = rep(c("FC60", "FC40", "FC30", "FC30d7", "C1d", "C2d", "Reh"), each = 2),
+  regulation = rep(c("Up", "Down"), times = 7),
+  count = c(
+  length(DE_60_up),    length(DE_60_down),
+  length(DE_40_up),    length(DE_40_down),
+  length(DE_30_up),    length(DE_30_down),
+  length(DE_30d7_up),  length(DE_30d7_down),
+  length(DE_Coll_up),  length(DE_Coll_down),
+  length(DE_C2d_up),   length(DE_C2d_down),
+  length(DE_Reh_up),   length(DE_Reh_down)))
+
+# Define custom order
+my_order <- c("FC60", "FC40", "FC30", "FC30d7", "C1d", "C2d", "Reh")
+
+deg_counts_pdn$condition <- factor(deg_counts_pdn$condition, levels = my_order) # for the condition order
+deg_counts_pdn$regulation <- factor(deg_counts_pdn$regulation, levels = c("Up", "Down")) # for the bar border
+
+save(deg_counts_pdn, file = here("data/DEG_lists/DEG_BARPLOTcount_PDN_01-2.RData"))
+```

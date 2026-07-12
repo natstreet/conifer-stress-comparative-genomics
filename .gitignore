@@ -1,0 +1,128 @@
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+
+# User-specific files
+.Ruserdata
+
+# Example code in package build process
+*-Ex.R
+
+# Output files from R CMD build
+/*.tar.gz
+
+# Output files from R CMD check
+/*.Rcheck/
+
+# RStudio files
+.Rproj.user/
+*.Rproj
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+
+# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+.httr-oauth
+
+# knitr and R markdown default cache directories
+*_cache/
+/cache/
+
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+
+# R Environment Variables
+.Renviron
+
+# data
+analysis
+analysis/
+data
+data/
+reference
+reference/
+singularity
+singularity/
+
+# large results (co-expression network output, rendered HTML)
+results/ComPlEx/
+results/heatmaps/
+
+# generated figure PDFs
+results/integration/figures/
+Rplots.pdf
+
+# figure output directories (final_figures contains generated outputs)
+results/final_figures/
+
+# Stray output PDFs at project root
+*.pdf
+
+# PCA cache (large, generated from data)
+results/pca_cache.RData
+
+gene_annotation.tsv
+
+# manuscript text drafts for review (never committed)
+manuscript_drafts/
+
+# FigShare upload/operational tooling — never part of the public repo
+figshare/
+
+# bytecode + OS cruft
+__pycache__/
+*.pyc
+.DS_Store
+**/.DS_Store
+
+# Deposit-provided orthogroup tables + pipeline run log (regenerated / not part of the code repo)
+Orthogroups/
+reproduce_paper.log
+
+# Derived genome FASTAs + rendered DE reports (regenerated / not part of the code repo)
+*_upstream_20kb.fa.gz
+src/BioQA_DE/DE_*.html
+Picea_abies__v__Pinus_sylvestris.tsv
+results/fig_pca_*.png
+
+# local working tarballs — not part of the published repo
+archive/
+
+# ── Provided by the FigShare deposit (doi:10.17044/scilifelab.32593647) — not tracked in the code repo ──
+cross_species_ks.tsv
+data/annotation/Picab02_230926_at01_longest_no_TE_aa_TF_predictions.tsv
+data/annotation/Pinsy01_240308_at01_longest_no_TE_aa_TF_predictions.tsv
+doc/Orthogroups_130323_predefined_tree.tsv
+doc/Spruce_GO_Genelist.txt
+doc/gene_aliases_20140331.txt
+doc/genes_ortholog_categories.tsv
+doc/pine_cold_stress.csv
+doc/pine_drought_samples.csv
+doc/spruce_cold_needles.csv
+doc/spruce_cold_roots.csv
+doc/spruce_drought_needles.csv
+doc/spruce_drought_roots.csv
+interspecies_aa_identity.tsv
+kaks_results.tsv
+pa_ps_promoter_te_results.tsv
+results/integration/centrality/centrality_spruce_cold_needle.tsv
+results/integration/centrality/centrality_spruce_cold_root.tsv
+results/integration/centrality/centrality_spruce_drought_needle.tsv
+results/integration/centrality/centrality_spruce_drought_root.tsv
+results/integration/chs3/chs3_promoter_motif_summary.tsv
+results/integration/cross_species_dnds_yn00.tsv
+results/integration/cross_species_promoter_te_jaccard.tsv
+results/integration/integration_backbone_1to1.tsv
+results/integration/network_degree.tsv
+sd_pair_expression_divergence.tsv
+sd_popgen_signals.tsv
+
+# ── Regenerated pipeline outputs + deposit-provided reference data — not tracked in the code repo ──
+results/
+doc/
+manuscript/supplementary/*.xlsx

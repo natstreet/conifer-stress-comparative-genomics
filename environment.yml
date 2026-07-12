@@ -1,0 +1,58 @@
+# environment.yml — reproducible software environment for
+#   "Comparative genomics of abiotic stress response in Norway spruce and Scots pine"
+#   (van Zalen et al.); pipeline in this repo (reproduce_paper.sh + src/).
+#
+# Create + activate:
+#   mamba env create -f environment.yml    # (or: conda env create -f environment.yml)
+#   conda activate conifer-repro
+#
+# This pins the software so a reviewer — or any session — recreates the exact toolchain
+# instead of installing tools ad hoc. Versions in comments are those VERIFIED to reproduce
+# the deposited results (2026-07-12). Pin the two that actually change results (biopython
+# for the dN/dS estimator, paml for the canonical yn00); float the rest to keep the solve
+# tractable. The ComPlEx Python port is a separate checkout (COMPLEX_PY_REPO;
+# https://github.com/natstreet/ComPlEx_python) — not a conda package.
+name: conifer-repro
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  # ── Python + numerical stack (verified: python 3.14.5, numpy 2.4.6, pandas 3.0.3,
+  #     scipy 1.17.1, statsmodels 0.14.6, openpyxl 3.1.5, matplotlib 3.10.9) ──
+  - python>=3.11
+  - numpy>=1.24
+  - pandas>=2.0
+  - scipy>=1.10
+  - statsmodels>=0.14
+  - openpyxl>=3.1
+  - matplotlib>=3.7
+  # Biopython provides Bio.codonalign.cal_dn_ds (YN00) used by kaks_yn00.py. That module is
+  # EXPERIMENTAL and cal_dn_ds may be dropped in a future release — pin a version that has it.
+  # (If the pipeline is switched to canonical PAML yn00, this dependency becomes non-critical.)
+  - biopython>=1.79,<2        # verified reproducing with 1.87
+  # ── Bioinformatics tools ──
+  - paml=4.10.10              # yn00 — canonical Yang & Nielsen (2000) dN/dS (cross_species_dnds)
+  - meme                      # fimo — CHS3 / promoter TF-motif scan (Fig 6)
+  - mafft                     # protein alignment (CHS phylogeny; codon-alignment guide)  [verified 7.526]
+  - blast                     # blastp / makeblastdb                                        [verified 2.17.0]
+  # ── R + Bioconductor (DE, GO, figures, tables, integrative model) ──
+  - r-base>=4.2
+  - bioconductor-deseq2
+  - bioconductor-topgo
+  - bioconductor-org.at.tair.db
+  - r-ggplot2
+  - r-dplyr
+  - r-tidyr
+  - r-data.table
+  - r-matrixstats
+  - r-patchwork
+  - r-openxlsx
+  - r-ranger
+  - r-mass
+  # r-brant: CRAN-only (install in R via install.packages("brant")); not on conda/bioconda
+  - r-gplots
+  - r-here
+  - r-tibble
+  - r-stringr
+  - r-gdata
+  - r-rmarkdown

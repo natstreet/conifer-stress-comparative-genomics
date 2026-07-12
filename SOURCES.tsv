@@ -1,0 +1,132 @@
+# SOURCES — every external input the pipeline needs, and where to obtain it.
+#
+# Reproducibility model: this git repository provides the code (reproduce_paper.sh + src/).
+# The data are NOT in git; download the two FigShare deposits and the genome files below,
+# extract/place them as indicated, then run ./reproduce_paper.sh (see README.md).
+#
+# DEPOSITS
+#   this-study/32593647   this study (van Zalen et al.)     FigShare  doi:10.17044/scilifelab.32593647
+#          -> expression matrices, DESeq2 objects + DE tables, ComPlEx co-expression
+#             network output, per-gene annotation, orthology tables, sample metadata,
+#             and this study's own inputs (CHS3 PAV, pine drought physiology).
+#   Kalman/28737623  Kalman et al. (spruce/pine popgen + genomes)  FigShare  doi:10.17044/scilifelab.28737623
+#          -> population-genomic selection/GWAS gene sets, Hi-C TAD / compartment data,
+#             and the genome CDS/protein/repeat/annotation files (placed under DATA_ROOT).
+#          NOTE: files in the Kalman deposit are gzipped. gunzip them on placement into the repo, since the
+#             pipeline reads the UNCOMPRESSED filenames — e.g. Orthogroups/Orthogroups.tsv[.gz],
+#             data/popgen/{selection_xpehh_ihs_genes.tsv,pnps_sd_genes.tsv,bio*_genes.uniq.txt}[.gz],
+#             data/epigenetics/{conserved_TADs_w_ortho_group_pairs,spruce_PC1_250kb_chromosome_wide}.tsv[.gz].
+#   ENA-assembly  raw genome assemblies: Norway spruce Picab02 = ENA GCA_964035815.1;
+#          Scots pine Pinsy01 = ENA GCA_965112685.1. ENA umbrella project PRJEB88492. Both
+#          assemblies are PUBLIC, so the genome files are obtainable from ENA even while the
+#          Kalman FigShare deposit remains embargoed (the popgen/epigenetics inputs are Kalman-only).
+#   Zenodo  Whiting et al. RepAdapt  Zenodo doi:10.5281/zenodo.12680121
+#   bioRxiv  Rodriguez et al. wood-formation cliques  bioRxiv doi:10.1101/2025.06.28.661522
+#
+# NOTE (verify before release): the this-study/32593647 vs Kalman/28737623 split below is my best mapping; please
+# confirm which deposit each archive actually lives in, since only you control the deposits.
+#
+path_or_glob	description	deposit	citation_or_doi
+# ── this-study/32593647 this study — expression, DE, network, annotation, orthology, metadata ──────────────
+data/expression/{SC,SD,PC,PD}_expression.txt	per-species stress VST expression matrices (cold+drought)	this-study/32593647	10.17044/scilifelab.32593647
+data/expression/{SCN,SCR,SDN,SDR,PCN,PCR,PDN,PDR}_expression.txt	per-condition VST expression matrices	this-study/32593647	10.17044/scilifelab.32593647
+data/expression/expr_median/{SC,SD,PC,PD}med_expression.txt	per-condition median-collapsed expression	this-study/32593647	10.17044/scilifelab.32593647
+data/dds/dds_*.rda	DESeq2 dataset objects (per species/condition; input to the DE_*.Rmd + plot scripts)	this-study/32593647	10.17044/scilifelab.32593647
+data/DEG_lists/DE_all_*_01_2L2FC.RData	differential-expression result tables (padj<0.01, |log2FC|>2) per condition	this-study/32593647	10.17044/scilifelab.32593647
+results/ComPlEx/	ComPlEx co-expression network output (co_expressologs, weighted_gene_pairs, orthogroup_coexpressolog_presence, per-tissue centrality + comparison tables)	this-study/32593647	10.17044/scilifelab.32593647
+results/integration/centrality/centrality_{spruce,pine}_{cold_needle,cold_root,drought_needle,drought_root}.tsv	ComPlEx Python-port per-network node centrality (Genes, Degree); spruce -> build_network_degree.py, pine -> pine_axis_replication.R (identical basis)	this-study/32593647 (genome_analysis_inputs.tar.gz)	10.17044/scilifelab.32593647
+data/annotation/gene_annotation.tsv.gz	per-gene functional annotation (P. abies; used by the GO producers; in annotation_and_metadata.tar.gz)	this-study/32593647	10.17044/scilifelab.32593647
+data/annotation/Picab02_230926_at01_longest_no_TE_aa_TF_predictions.tsv	Norway spruce PlantTFDB TF predictions	this-study/32593647	10.17044/scilifelab.32593647
+data/annotation/Pinsy01_240308_at01_longest_no_TE_aa_TF_predictions.tsv	Scots pine PlantTFDB TF predictions	this-study/32593647	10.17044/scilifelab.32593647
+data/annotation/Pinsy01_240308_at01_longest_no_TE.only_PASA.only_gene.cleaned_IDs.bed	Scots pine longest-CDS representative gene models (BED; TSS source for the promoter TE analyses; in annotation_and_metadata.tar.gz)	this-study/32593647	10.17044/scilifelab.32593647
+doc/{spruce,pine}_*.csv	per-sample condition metadata (read from doc/; for the PCA in Figure 1)	this-study/32593647	10.17044/scilifelab.32593647
+doc/orthologs.tsv.gz	OrthoFinder gene -> orthogroup assignments	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
+doc/genes_ortholog_categories.tsv	ComPlEx ortholog table (gene, species, Ortholog_Group, category)	this-study/32593647	10.17044/scilifelab.32593647
+doc/Orthogroups_130323_predefined_tree.tsv	Aratha-Picea-Pinus orthogroups (RepAdapt bridging)	this-study/32593647	10.17044/scilifelab.32593647
+doc/gene_aliases_20140331.txt	TAIR symbol -> Arabidopsis locus	TAIR (via this-study/32593647)	10.17044/scilifelab.32593647
+doc/Spruce_GO_Genelist.txt	Picea abies gene -> GO background list (provenance; not read by the current pipeline; in annotation_and_metadata.tar.gz)	this-study/32593647	10.17044/scilifelab.32593647
+Orthogroups/Orthogroups.tsv	OrthoFinder orthogroups (gene lists per species); from the Kalman et al. OrthoFinder run, deposited in the Kalman Orthogroups/ folder	Kalman/28737623	10.17044/scilifelab.28737623
+Orthogroups/Orthogroups.GeneCount.tsv	OrthoFinder per-orthogroup gene counts; from the Kalman et al. OrthoFinder run (Kalman Orthogroups/ folder)	Kalman/28737623	10.17044/scilifelab.28737623
+Orthogroups/Orthogroups_SingleCopyOrthologues.txt	OrthoFinder single-copy orthogroups; from the Kalman et al. OrthoFinder run (Kalman Orthogroups/ folder)	Kalman/28737623	10.17044/scilifelab.28737623
+Orthogroups/Phylogenetic_Hierarchical_Orthogroups_N10.tsv.gz	OrthoFinder N10 hierarchical orthogroups	this-study/32593647	10.17044/scilifelab.32593647
+Orthogroups/{spruce,pine}_all_in_duplicated_blocks_PGset.tsv.gz	genes in segmental-duplication blocks (SD gene universe)	this-study/32593647	10.17044/scilifelab.32593647
+Picea_abies__v__Pinus_sylvestris.tsv	OrthoFinder 1:1 spruce-pine ortholog table	this-study/32593647	10.17044/scilifelab.32593647
+data/chs3/chs3_pav_north_south.tsv	CHS3-pair PAV presence counts (Figure 6b); the summary north/south present counts are read from the Kalman PAV origin file below (PopGen/tbl-segregating-pres-abs-pls-da-discretized-CDS-top-loadings.csv.gz: G004115 north26/south0, G004116 north26/south2 — match verified 2026-07-12)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
+Kalman deposit: PopGen/tbl-segregating-pres-abs-pls-da-discretized-CDS-top-loadings.csv.gz	[PAV ORIGIN — provenance only, not placed/read by the pipeline; the pav signal is already baked into sd_popgen_signals.tsv] Spruce population presence-absence variation: 198 top-PLS-DA-loading genes with per-population (north/south) present counts. Sole source of both the Fig 6b CHS3 counts and the Fig 7 SD∩PAV signal (SD universe ∩ these 198 = 95 genes, identical set verified 2026-07-12)	Kalman/28737623	10.17044/scilifelab.28737623
+data/chs3/chs3_family.faa	CHS gene-family protein sequences (Figure S4 phylogeny input)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
+data/chs3/chs3_family.aln	CHS family MAFFT alignment (Figure S4; regenerable with REBUILD=TRUE + mafft)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
+data/chs3/chs3_family.nwk	CHS family FastTree tree (Figure S4; regenerable with REBUILD=TRUE + FastTree)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
+doc/condition_metadata.tsv	stress/tissue condition metadata	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
+data/physiology/scots_pine_drought_physiology.csv	Scots pine drought physiology (Figure S1)	this-study/32593647	10.17044/scilifelab.32593647
+data/physiology/metadata.csv	physiology sample metadata (companion to scots_pine_drought_physiology.csv; read by figureS1_physiology.R; in annotation_and_metadata.tar.gz)	this-study/32593647	10.17044/scilifelab.32593647
+data/physiology/scots_pine_drought_physiology_source.xlsx	raw source workbook for scots_pine_drought_physiology.csv (provenance; not read by the pipeline; in annotation_and_metadata.tar.gz)	this-study/32593647	10.17044/scilifelab.32593647
+# ── Kalman/28737623 Kalman et al. — population genomics + epigenetics ──────────────────────────────────
+data/popgen/selection_xpehh_ihs_genes.tsv	XP-EHH / iHS positive-selection genes with signal type (gene, then xpehh|ihs|"xpehh,ihs"); = Kalman deposit PopGen/gene-id_selected-genes_set-8995.txt (download and place as this filename)	Kalman/28737623	10.17044/scilifelab.28737623
+# NOTE: the earlier PCAdapt combined-score set (selection_pcadapt_genes.txt) and its PCAdapt∩XP-EHH/iHS
+# intersection (selection_pcadapt_xpehh_ihs_intersection_genes.txt) are no longer used — the final Kalman
+# deposit ships a revised per-PC PCAdapt analysis (PopGen/gene-list_selection_pcadapt_PC{1,2}.uniq.txt) and
+# no reported number here relied on the combined-score set. stress_selection_enrichment.R now uses XP-EHH/iHS + envGWAS only.
+data/popgen/bio{3,7,10,11,18,19}_genes.uniq.txt	envGWAS climate-associated genes per bioclim variable	Kalman/28737623	10.17044/scilifelab.28737623
+data/popgen/pnps_sd_genes.tsv	Norway spruce population-resequencing pN/pS per gene	Kalman/28737623	10.17044/scilifelab.28737623
+data/epigenetics/conserved_TADs_w_ortho_group_pairs.tsv	conserved TAD orthogroup pairs (Hi-C)	Kalman/28737623	10.17044/scilifelab.28737623
+data/epigenetics/spruce_PC1_250kb_chromosome_wide.tsv	Hi-C A/B compartment PC1 (250 kb)	Kalman/28737623	10.17044/scilifelab.28737623
+data/annotation/pine_GO_annotation.tsv.gz	Scots pine (Pinsy01) per-gene GO annotation (eggNOG + InterPro); = Kalman deposit Genome/Pinsy01_functional_annotations.tsv.gz (verified byte-identical 2026-07-12; download and place as this filename)	Kalman/28737623	10.17044/scilifelab.28737623
+# ── Genome CDS / protein / repeat / TSS files — place under $DATA_ROOT (default ./genome_data) ─
+# Obtain from Kalman/28737623 FigShare and/or the ENA-assembly assemblies. Needed by kaks_within_species_sd.py,
+# cross_species_ks.py, kaks_yn00.py, te_promoter_family_analysis.py, pa_ps_promoter_te_presence.py,
+# run_tfdb_prediction.py, chs3_promoter_motifs.py.
+# PROVENANCE (verified 2026-07-10): the longest-no_TE CDS/AA FASTAs and sorted GFFs below are DERIVED products
+#   (longest-isoform selection + TE filtering + translation) of the raw Picab02/Pinsy01 genome + annotation.
+#   The Kalman deposit (10.17044/scilifelab.28737623) provides the RAW genome, CDS GFF and repeat annotation but
+#   NOT these processed longest-no_TE FASTAs/GFFs verbatim; regenerate them from the deposited genome+annotation
+#   via the genome-annotation pipeline (github.com/tallgran/conifer-JasonHill) if running from scratch. They are
+#   needed ONLY for full from-scratch regeneration: the intermediates they produce (kaks_results.tsv,
+#   cross_species_ks.tsv, cross_species_dnds_yn00.tsv, interspecies_aa_identity.tsv) are DEPOSITED in this study's
+#   genome_analysis_inputs.tar.gz (10.17044/scilifelab.32593647), so standard reproduction does not require them.
+$DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_cds.fa	spruce longest-CDS coding sequences	Kalman/28737623/ENA-assembly	GCA_964035815.1 / 10.17044/scilifelab.28737623
+$DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_aa.fa	spruce longest-isoform proteome	Kalman/28737623/ENA-assembly	GCA_964035815.1
+$DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_sorted.gff3	spruce longest-CDS gene models (TSS)	Kalman/28737623/ENA-assembly	GCA_964035815.1
+$DATA_ROOT/sprucev2/Picab02_repeats.gff3.gz	spruce RepeatMasker repeat annotation (Target "Motif:<family>")	Kalman/28737623/ENA-assembly	GCA_964035815.1
+$DATA_ROOT/pinev1/Pinsy01_240308_at01_longest_no_TE_cds.fa	pine longest-CDS coding sequences	Kalman/28737623/ENA-assembly	GCA_965112685.1
+$DATA_ROOT/pinev1/Pinsy01_240308_at01_longest_no_TE_aa.fa.gz	pine longest-isoform proteome	Kalman/28737623/ENA-assembly	GCA_965112685.1
+$DATA_ROOT/pinev1/Pinsy01_chromosomes_and_unplaced.all_repeats.gff.gz	pine RepeatMasker repeat annotation	Kalman/28737623/ENA-assembly	GCA_965112685.1
+# ── External literature datasets ─────────────────────────────────────────────────────────────
+data/wood/wood_clique_genes.xlsx	wood-formation co-expression clique genes = Rodriguez et al. "Supplementary Data 4.xlsx" (download and place as this filename); producer reads sheets "Conserved genes unique", "Conifer-specific genes unique", "Differentiated genes"	Nat-Comms-in-press	Rodriguez et al. "An evo-devo resource for wood: Comparative regulomics across dicot and conifer trees", Nature Communications (in press); preprint bioRxiv 10.1101/2025.06.28.661522
+#
+# ── Provenance note: sd_popgen_signals.tsv (partially un-reconstructable intermediate) ──
+# sd_popgen_signals.tsv (deposit root) annotates segmental-duplication (SD) spruce genes with
+# population-genomic signals. Components (provenance):
+#   SD universe : spruce genes in Orthogroups/spruce_all_in_duplicated_blocks_PGset.tsv.gz (11,615; reproducible)
+#   pav signal  : 95 genes = SD universe ∩ the Kalman PAV origin file
+#                 (PopGen/tbl-segregating-pres-abs-pls-da-discretized-CDS-top-loadings.csv.gz, 198 genes).
+#                 Fully reproducible from the deposit: the 95-gene set is identical to the baked pav rows
+#                 (set match verified 2026-07-12) — NOT an un-reconstructable intermediate.
+#   gwas signal : SD ∩ union(bio{3,7,10,11,18,19}_genes.uniq.txt) (88; reproducible)
+#   coordinates : gene chrom/midpos from sd_genes_for_plot.tsv
+#   selection   : 96 genes — provenance NOT saved, NOT reconstructable (only 14/96 in
+#                 selection_pcadapt_genes.txt). Generated interactively; no producer exists.
+# Manuscript impact: NONE — Fig 7 uses only the pav rows (= pav_in_sd_genes.txt, reproducible);
+# the selection/gwas rows feed only popgen_category_* tables, whose values are not cited in the paper.
+#
+# ── Inputs surfaced by the end-to-end clean-room (2026-07-07) — add to the deposit / obtain ──
+# Promoter TF-motif scans (chs3_promoter_motifs.py, run_tfdb_prediction.py) need:
+PlantTFDB_motifs.meme	PlantTFDB binding-site motifs in MEME format	PlantTFDB	http://planttfdb.gao-lab.org/
+Ath_TF_binding_motifs_information.txt	PlantTFDB Arabidopsis TF matrix->family map (companion to PlantTFDB_motifs.meme; read by chs3_promoter_motifs.py)	PlantTFDB	http://planttfdb.gao-lab.org/
+{spruce,pine}_upstream_20kb.fa.gz	proximal-promoter FASTA (20 kb upstream); GENERATED by src/ComPlEx/extract_upstream_seqs.py from the genome assembly + GFF (not deposited — regenerate)	this-study/32593647/ENA-assembly	src/ComPlEx/extract_upstream_seqs.py
+# FIMO (MEME Suite, https://meme-suite.org): chs3_promoter_motifs.py runs a SMALL FIMO scan (p<1e-4) on the
+#   two CHS3 promoters only, using PlantTFDB_motifs.meme, for the Fig 6 one-line motif statistic. A local FIMO
+#   binary is required for that single figure; NO genome-wide FIMO scan is used anywhere in the pipeline.
+#   (The Fig S4 SD-pair te_jaccard is produced directly by src/ComPlEx/sd_pair_te_flank_jaccard.py from the
+#    RepeatMasker GFF + longest-CDS gene positions — no FIMO or TF-motif Jaccard involved.)
+$DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_aa.fa	spruce proteome (run_tfdb_prediction.py)	Kalman/28737623/ENA-assembly	GCA_964035815.1
+# Figure 1 PCA (figure1ab_pca.R, EXPR_RAWDIR) needs the PER-CONDITION expression matrices for BOTH species:
+data/expression/{SCN,SCR,SDN,SDR}_expression.txt	spruce per-condition matrices (present in deposit)	this-study/32593647	10.17044/scilifelab.32593647
+# NOTE: the per-condition VST matrices (spruce AND pine, SCN..PDR) are REGENERATED by
+# src/ComPlEx/ComPlExDataPrep.R from the deposited DESeq2 objects (data/dds/dds_*.rda) — they
+# do not need separate deposit; run ComPlExDataPrep.R (reproduce_paper.sh does this first).
+# R packages for the DE notebook renders (DE_*.Rmd): APL, plotly (QC/visualisation only; the DE
+# result tables themselves are deposited in data/DEG_lists/).
+$DATA_ROOT/sprucev2/Picab02_chromosomes_and_unplaced.softmasked.fa.gz	spruce softmasked genome (promoter extraction)	Kalman/28737623/ENA-assembly	GCA_964035815.1
+$DATA_ROOT/sprucev2/Picab02_230926_at01_all_sorted.gff3.gz	spruce all-isoform GFF (promoter TSS)	Kalman/28737623/ENA-assembly	GCA_964035815.1
+$DATA_ROOT/pinev1/Pinsy01_chromosomes_and_unplaced_softmasked.fasta.gz	pine softmasked genome (promoter extraction)	Kalman/28737623/ENA-assembly	GCA_965112685.1
+$DATA_ROOT/pinev1/Pinsy01_240308_at01_all.gff3.gz	pine all-isoform GFF (promoter TSS)	Kalman/28737623/ENA-assembly	GCA_965112685.1
