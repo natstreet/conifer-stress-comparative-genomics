@@ -128,6 +128,8 @@ stage "not_coex_de_pine"               "$R"      src/ComPlEx/not_coex_de_pine.R 
 stage "wood_clique_and_conditioned_pav" "$PY_SCI" src/ComPlEx/wood_clique_and_conditioned_pav.py
 stage "stress_selection_enrichment"    "$R"      src/ComPlEx/stress_selection_enrichment.R    # selection enrichment (supp fig)
 stage "enrichment_tests_extended"      "$R"      src/ComPlEx/enrichment_tests_extended.R
+stage "pine_sd_classify"               "$PY_BIO" src/ComPlEx/pine_sd_classify.py               # pine SD gene classes (reciprocal axis)
+stage "pine_sd_category_enrichment"    "$R"      src/ComPlEx/pine_sd_category_enrichment.R     # pine SD x category enrichment (Fig 5b pine)
 stage "pav_category_bh"                "$R"      src/ComPlEx/pav_category_bh.R                # PAV BH within the 5-category family [not_coex p_bh]
 stage "gwas_deg_overlap"               "$R"      src/ComPlEx/gwas_deg_overlap.R
 stage "orthogroup_direction_concordance" "$R"    src/ComPlEx/orthogroup_direction_concordance.R  # Fig 2 directional concordance [27]
