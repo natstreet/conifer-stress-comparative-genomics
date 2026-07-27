@@ -20,7 +20,6 @@
 #          Scots pine Pinsy01 = ENA GCA_965112685.1. ENA umbrella project PRJEB88492. Both
 #          assemblies are PUBLIC, so the genome files are obtainable from ENA even while the
 #          Kalman FigShare deposit remains embargoed (the popgen/epigenetics inputs are Kalman-only).
-#   Zenodo  Whiting et al. RepAdapt  Zenodo doi:10.5281/zenodo.12680121
 #   bioRxiv  Rodriguez et al. wood-formation cliques  bioRxiv doi:10.1101/2025.06.28.661522
 #
 # NOTE (verify before release): the this-study/32593647 vs Kalman/28737623 split below is my best mapping; please

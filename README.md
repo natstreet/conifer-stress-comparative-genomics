@@ -32,8 +32,7 @@ listed in [`SOURCES.tsv`](SOURCES.tsv). In brief:
 - The Kalman et al. deposit (doi:10.17044/scilifelab.28737623) provides the
   population-genomic and Hi-C inputs (`data/popgen/`, `data/epigenetics/`) and the genome
   CDS / protein / repeat / annotation files.
-- Whiting et al. (Zenodo doi:10.5281/zenodo.12680121) and Rodriguez et al. (bioRxiv
-  doi:10.1101/2025.06.28.661522) provide `data/whiting/` and `data/wood/`.
+- Rodriguez et al. (bioRxiv doi:10.1101/2025.06.28.661522) provide `data/wood/`.
 
 **3. Place the genome files** (spruce Picab02 / pine Pinsy01 CDS, protein, repeat GFF and
 TSS GFF; see `SOURCES.tsv`) under a directory of your choice and point `DATA_ROOT` at it
