@@ -1,5 +1,7 @@
 # conifer-stress-comparative-genomics
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21628206.svg)](https://doi.org/10.5281/zenodo.21628206)
+
 Code for:
 
 **Comparative genomics of abiotic stress response in Norway spruce and Scots pine**
@@ -161,6 +163,13 @@ This installs everything the pipeline uses, so no tools need installing by hand:
   `validation/` — `validate_complex.R` (in-house R transcription) and
   `validate_against_canonical_rcomplex.R` (the canonical published `rcomplex`) versus
   `complex_py.py`, with the result written to `validation/VALIDATION_NOTE.md`.
+
+## Citation
+
+If you use this code, please cite the archived software via its Zenodo DOI — all versions:
+[10.5281/zenodo.21628206](https://doi.org/10.5281/zenodo.21628206); this release (v1.0):
+[10.5281/zenodo.21628207](https://doi.org/10.5281/zenodo.21628207) — and the associated paper
+(van Zalen et al.). Machine-readable citation metadata is in [`CITATION.cff`](CITATION.cff).
 
 ## Contact
 

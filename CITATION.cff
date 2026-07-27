@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using the metadata below (the Zenodo
+  DOI archives the code), and also cite the associated paper (van Zalen et al.).
+title: >-
+  conifer-stress-comparative-genomics: analysis code for "Comparative genomics
+  of abiotic stress response in Norway spruce and Scots pine"
+authors:
+  - family-names: Street
+    given-names: Nathaniel
+    affiliation: Umeå University
+type: software
+license: GPL-3.0
+repository-code: https://github.com/natstreet/conifer-stress-comparative-genomics
+doi: 10.5281/zenodo.21628206
+version: v1.0
+date-released: "2026-07-27"
