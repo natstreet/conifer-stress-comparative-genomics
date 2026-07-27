@@ -1,0 +1,12 @@
+{
+  "upload_type": "software",
+  "title": "conifer-stress-comparative-genomics: analysis code for \"Comparative genomics of abiotic stress response in Norway spruce and Scots pine\"",
+  "creators": [
+    { "name": "Street, Nathaniel", "affiliation": "Umeå University" }
+  ],
+  "license": "GPL-3.0",
+  "related_identifiers": [
+    { "relation": "isSupplementedBy", "identifier": "10.17044/scilifelab.32593647", "scheme": "doi", "resource_type": "dataset" },
+    { "relation": "isSupplementedBy", "identifier": "10.17044/scilifelab.28737623", "scheme": "doi", "resource_type": "dataset" }
+  ]
+}
