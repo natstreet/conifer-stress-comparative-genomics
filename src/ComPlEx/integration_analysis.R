@@ -207,9 +207,10 @@ sd_pairs[, pair_coex_class := ifelse(
   "diverged"))]
 
 cat("  SD pair co-expressolog status distribution:\n")
-print(sd_pairs[, .N, by = .(sd_class, pair_coex_class)][order(sd_class, pair_coex_class)])
-fwrite(sd_pairs[, .N, by = .(sd_class, pair_coex_class)][order(sd_class, pair_coex_class)],
-       file.path(OUTDIR, "sd_pair_coexpression_class_counts.tsv"), sep = "\t")
+pair_class_counts <- sd_pairs[, .N, by = .(sd_class, pair_coex_class)][order(sd_class, pair_coex_class)]
+pair_class_counts[, pct_within_sd_class := round(100 * N / sum(N), 2), by = sd_class]  # e.g. shared_SD both_coex = 699/945 = 73.97%
+print(pair_class_counts)
+fwrite(pair_class_counts, file.path(OUTDIR, "sd_pair_coexpression_class_counts.tsv"), sep = "\t")
 
 # -- Join stress expression divergence onto SD pairs (for sd_pair_features) -----
 log_source("sd_pair_expression_divergence", file.path(SD_DIR, "sd_pair_expression_divergence.tsv"))
