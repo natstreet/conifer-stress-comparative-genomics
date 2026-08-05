@@ -98,7 +98,9 @@ tab <- do.call(rbind, tab); frac <- do.call(rbind, frac)
 tab$P <- signif(tab$P, 3)
 write.csv(tab, file.path(OUTT, "Supplementary_Table_S3_timing_overlap.csv"), row.names = FALSE)
 dir.create("manuscript/supplementary", showWarnings = FALSE, recursive = TRUE)
-openxlsx::write.xlsx(tab, "manuscript/supplementary/Supplementary_Table_S3_timing_overlap.xlsx")
+# writexl writes a clean minimal xlsx (this openxlsx build emits dangling drawing/printerSettings
+# rels that openpyxl / strict Excel cannot open).
+writexl::write_xlsx(as.data.frame(tab), "manuscript/supplementary/Supplementary_Table_S3_timing_overlap.xlsx")
 cat("universe N =", N, "\n\nSPOT-CHECK rows:\n")
 sc <- subset(tab, (sampling_point == "cold_root" & timepoint %in% c("5C_6h", "neg5C_10d")) |
                    (sampling_point == "drought_root" & timepoint == "Collapse"))
