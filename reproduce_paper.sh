@@ -170,6 +170,7 @@ stage "table_s4_conserved_go"          "$R"      src/tables/table_s4_conserved_c
 stage "table_s5_category_go"           "$R"      src/tables/table_s5_coexpression_category_go.R     # Supp Table S5 (co-expression category GO)
 stage "table_s6_dnds"                  "$R"      src/tables/table_s6_dnds_yn00.R                    # Supp Table S6 (dN/dS YN00)
 stage "table_s7_threshold"             "$R"      src/tables/table_s7_threshold_sensitivity.R        # Supp Table S7 (threshold sensitivity)
+stage "table_s8_gene_axis"             "$R"      src/tables/table_s8_gene_axis_classification.R     # Supp Table S8 (per-gene conservation-divergence axis)
 
 echo "=========================================================================="
 echo "reproduce_paper.sh finished: $ok OK, $fail FAILED.${failed_stages:+  failed:$failed_stages}"

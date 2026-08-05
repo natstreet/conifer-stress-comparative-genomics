@@ -164,6 +164,11 @@ de_cat <- de_tbl[, .(n = .N, pct = round(100*.N/nrow(de_tbl), 1)), by = coex_cat
 print(de_cat)
 fwrite(de_cat, file.path(OUTDIR, "de_coex_category_distribution.tsv"), sep = "\t")
 
+# Per-gene DE-set co-expressolog category (the assignment underlying the distribution above),
+# committed so downstream tables (e.g. Supplementary Table S8) can join the paper's category per gene.
+fwrite(de_tbl[, .(pa_gene, coex_category, n_de_tissues, stress_type)][order(pa_gene)],
+       file.path(OUTDIR, "de_gene_coex_category.tsv"), sep = "\t")
+
 # Compare DE rate within each co-expressolog category
 # (what fraction of each category's genes are stress-DE?)
 cat("\nDE rate by co-expressolog category:\n")
