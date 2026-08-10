@@ -125,6 +125,7 @@ stage "pine_axis_replication"          "$R"      src/ComPlEx/pine_axis_replicati
 stage "threshold_sensitivity"          "$PY_SCI" src/ComPlEx/threshold_sensitivity.py         # Supp Table S1
 stage "not_coex_de_analysis"           "$R"      src/ComPlEx/not_coex_de_analysis.R           # Fig S mechanism inputs (spruce)
 stage "not_coex_de_pine"               "$R"      src/ComPlEx/not_coex_de_pine.R               # reciprocal Scots pine not_coex confirmation
+stage "no1to1_orphan_vs_expanded"      "$R"      src/ComPlEx/no1to1_orphan_vs_expanded.R      # orphan vs expanded-family split of the no-1:1 set
 stage "wood_clique_and_conditioned_pav" "$PY_SCI" src/ComPlEx/wood_clique_and_conditioned_pav.py
 stage "stress_selection_enrichment"    "$R"      src/ComPlEx/stress_selection_enrichment.R    # selection enrichment (supp fig)
 stage "enrichment_tests_extended"      "$R"      src/ComPlEx/enrichment_tests_extended.R
