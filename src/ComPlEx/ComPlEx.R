@@ -68,31 +68,14 @@ if (!file.exists(ortholog_group_RData)){
   load(file = ortholog_group_RData)
 }
 
-# Add annotations from arabidopsis
-symbols <- read.delim(here("doc/gene_aliases_20140331.txt"), sep = "\t") %>%
-  dplyr::rename(Arabidopsis = locus_name, Symbol = symbol, Name = full_name)
-ortholog_annot_file <- here("doc/Orthogroups_130323_predefined_tree.tsv")
-
-ortholog_annot_RData <- paste0(out_root, "/RData/Arabidopsis-annotation_spruce-pine.RData")
-if (!file.exists(ortholog_annot_RData)) {
-  annot <- read.delim2(ortholog_annot_file, header = TRUE, sep = "\t") %>%
-    dplyr::rename(Arabidopsis = Aratha.SHORT.pep, OrthoGroup = Orthogroup) %>%
-    select(Arabidopsis, OrthoGroup) %>%
-    filter(Arabidopsis != "") %>%
-    separate_rows(Arabidopsis, sep = ", ", convert = FALSE) %>%
-    mutate(Arabidopsis = gsub("\\.\\d.p\\d$", "", Arabidopsis)) %>%
-    mutate(Arabidopsis = gsub("Aratha_", "", Arabidopsis)) %>%
-    left_join(symbols, by = "Arabidopsis") %>%
-    group_by(OrthoGroup) %>%
-    summarise(Arabidopsis = paste0(unique(Arabidopsis), collapse = "; "), 
-              Symbol = paste0(unique(Symbol), collapse = "; "), 
-              Name = paste0(unique(Name), collapse = "; ")) %>%
-    mutate(Symbol = gsub("NA", "", Symbol),
-           Name = gsub("NA", "", Name))
-  save(ortho, annot, file = ortholog_annot_RData)
-} else {
-  load(file = ortholog_annot_RData)
-}
+# NOTE: the former Arabidopsis gene-symbol annotation join was REMOVED. It read symbols from
+# doc/Orthogroups_130323_predefined_tree.tsv (a DIFFERENT OrthoFinder run) and joined them to the
+# co-expressolog table BY OrthoGroup ID. OrthoFinder numbers orthogroups per run, so those IDs do not
+# correspond to the co-expressolog OGs (from doc/genes_ortholog_categories.tsv) — for shared OG IDs the
+# per-OG Picea gene-count disagreed 73% of the time — meaning Symbol/Name were attached to the wrong
+# orthogroups for the majority of rows. These labels fed no committed table and no reported number. No
+# same-run Arabidopsis source shares the co-expressolog OG namespace (that run is spruce-pine only), so the
+# join is dropped rather than repointed.
 
 species1_transcription_txt <- here("data/expression", paste0(species1_keyword, "_expression.txt"))
 species2_transcription_txt <- here("data/expression", paste0(species2_keyword, "_expression.txt"))
@@ -316,7 +299,6 @@ if (!file.exists(comparison_RData)) {
   comparison_table <- comparison %>%
     rowwise() %>%
     mutate(Max.p.val = max(Species1.p.val, Species2.p.val)) %>%
-    left_join(annot, by = "OrthoGroup") %>%
     select(-c("Species1.neigh", "Species1.ortho.neigh", "Species2.neigh", "Species2.ortho.neigh")) %>%
     arrange(Max.p.val)
   
