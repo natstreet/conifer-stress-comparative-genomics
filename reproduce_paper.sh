@@ -120,6 +120,7 @@ stage "build_network_degree"           "$PY_SCI" src/ComPlEx/build_network_degre
 stage "tf_enrichment_by_category"      "$PY_SCI" src/ComPlEx/tf_enrichment_by_category.py     # Fig 3b context
 stage "pnps_confound_analysis"         "$PY_SCI" src/ComPlEx/pnps_confound_analysis.py
 stage "single_copy_dnds_breadth"       "$PY_SCI" src/ComPlEx/single_copy_dnds_breadth.py      # Fig 5a
+stage "dnds_robustness_subsample"      "$PY_BIO" src/ComPlEx/dnds_robustness_subsample.py     # dN/dS robustness (PRANK codon + codeml M0 vs yn00); needs prank (PRANK_BIN) + codeml + genome CDS
 stage "degree_dnds_correlation"        "$R"      src/ComPlEx/degree_dnds_correlation.R        # Fig 7: hubness vs purifying selection
 stage "pine_axis_replication"          "$R"      src/ComPlEx/pine_axis_replication.R          # reciprocal Scots pine: degree-dN/dS + Model A/B
 stage "threshold_sensitivity"          "$PY_SCI" src/ComPlEx/threshold_sensitivity.py         # Supp Table S1

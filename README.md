@@ -142,6 +142,9 @@ This installs everything the pipeline uses, so no tools need installing by hand:
 - Python ≥ 3.11 with numpy, pandas, scipy, statsmodels, openpyxl; Biopython (Bio.codonalign, the
   cross-species dN/dS estimator — an *experimental* module, so its version is pinned; see `kaks_yn00.py`)
 - PAML `yn00` (canonical Yang–Nielsen dN/dS), MAFFT, BLAST, and FIMO (MEME suite) for the promoter TF-motif scans
+- PAML `codeml` and PRANK (codon-aware alignment) for the dN/dS robustness supplementary
+  (`src/ComPlEx/dnds_robustness_subsample.py`; PRANK installed via a small dedicated env,
+  e.g. `mamba create -n dnds_robust -c bioconda prank`, and pointed to via `PRANK_BIN`)
 - The ComPlEx co-expression network build uses the companion Python port
   (https://github.com/natstreet/ComPlEx_python); point `COMPLEX_PY_REPO` at your checkout.
 

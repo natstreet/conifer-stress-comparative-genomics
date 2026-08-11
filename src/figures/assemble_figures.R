@@ -55,6 +55,13 @@ save_fig <- function(grobs, out, w, h, ncol=1, wt=NULL, ht=NULL) {
            error=function(e) message("  (png copy skipped for ", basename(out), ")"))
   message("Saved: ", basename(out))
 }
+## trim residual whitespace from a saved figure's PNG (magick), leaving a small uniform margin
+trim_png <- function(pdf_out, border = 10) {
+  png_out <- sub("\\.pdf$", ".png", pdf_out)
+  if (file.exists(png_out))
+    image_write(image_border(image_trim(image_read(png_out), fuzz = 1), "white",
+                             sprintf("%dx%d", border, border)), png_out, format = "png")
+}
 run_script <- function(path, makes) {
   message("\n>> sourcing ", path, " (produces ", makes, ")")
   tryCatch(sys.source(path, envir=new.env(parent=globalenv())),
@@ -99,7 +106,11 @@ if (file.exists("src/figures/figure6_chs3_case_study.R"))
   run_script("src/figures/figure6_chs3_case_study.R", "chs3_sd_pair_figure.pdf")
 chs6 <- "results/integration/chs3/chs3_sd_pair_figure.pdf"
 chs6 <- chs6[file.exists(chs6)][1]
-if (!is.na(chs6)) save_fig(list(panel(chs6,"",dpi=120)), file.path(OUT,"Figure6.pdf"), w=18, h=14) else
+if (!is.na(chs6)) {
+  ar6 <- { ps <- pdftools::pdf_pagesize(chs6)[1,]; ps$width / ps$height }   # fit canvas to panel aspect (no tall-canvas margin)
+  save_fig(list(panel(chs6,"",dpi=120)), file.path(OUT,"Figure6.pdf"), w=18, h=18/ar6)
+  trim_png(file.path(OUT,"Figure6.pdf"))
+} else
   message("Figure6 component not found — keeping existing results/final_figures/Figure6.pdf")
 
 # ── Supplementary figures ────────────────────────────────────────────────────
@@ -116,6 +127,7 @@ save_fig(list(
 
 save_fig(list(panel("results/integration/chs3/chs3_tree.pdf","",dpi=150)),
          file.path(OUT,"FigureS4.pdf"), w=18, h=20)
+trim_png(file.path(OUT,"FigureS4.pdf"))
 
 message("\nFigure S1 (Scots pine drought physiology) is built by src/figures/figureS1_physiology.R.")
 message("\nAll final figures written to: ", OUT)
