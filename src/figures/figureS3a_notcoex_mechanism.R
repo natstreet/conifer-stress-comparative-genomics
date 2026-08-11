@@ -39,8 +39,8 @@ p <- ggplot(cnt, aes(x = label, y = pct, fill = label)) +
             vjust = -0.2, size = 3) +
   scale_fill_brewer(palette = "Set2") +
   scale_y_continuous(limits = c(0, max(cnt$pct) * 1.15), expand = c(0, 0)) +
-  labs(x = NULL, y = "% of not_coex stress-responsive genes",
-       title = "Mechanism classification of not_coex genes") +
+  labs(x = NULL, y = "% of not co-expressed stress-responsive genes",
+       title = "Mechanism classification of not co-expressed genes") +
   theme_paper(base_size = 10, major_y = TRUE) +
   theme(axis.text.x = element_text(angle = 20, hjust = 1))
 
