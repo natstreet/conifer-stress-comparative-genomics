@@ -33,6 +33,10 @@ CAT_LAB <- c(conserved = "Conserved", cold_specific = "Cold-specific",
 
 fish <- fread(file.path(INTEG, "popgen_category_fisher.tsv"))[signal == "pav"]
 enr  <- fread(file.path(INTEG, "popgen_category_enrichment.tsv"))
+# Significance (asterisks) comes from the ADOPTED 5-test family (PAV x 5 co-expression categories, BH),
+# committed in pav_category_bh.tsv — NOT popgen_category_fisher.tsv's 15-test (gwas+pav+selection) padj,
+# which over-corrects and hid the not_coex result that the main text reports (p_bh = 0.032, survives).
+bh   <- fread(file.path(INTEG, "pav_category_bh.tsv"))
 n_pav <- enr[label == "pav", n_group]     # total PAV genes (95)
 n_bg  <- enr[label == "pav", n_bg]        # non-PAV universe (42956)
 
@@ -46,7 +50,7 @@ res <- rbindlist(lapply(CAT_ORD, function(cat) {
   ft <- fisher.test(matrix(c(a, b, c, d), nrow = 2))
   data.table(category = cat, n_pav_in_cat = a,
              OR = unname(ft$estimate), ci_lo = ft$conf.int[1], ci_hi = ft$conf.int[2],
-             OR_committed = row$OR, padj = row$padj)
+             OR_committed = row$OR, padj = bh[coex_category == cat, p_bh])   # 5-test-family BH p
 }))
 res[, delta := abs(OR - OR_committed)]
 cat("Reconstructed vs committed OR (max delta ",
@@ -68,7 +72,7 @@ p <- ggplot(res, aes(x = label, y = OR)) +
   scale_y_log10() +
   labs(x = NULL, y = "Odds ratio (PAV enrichment, log scale)",
        title = "PAV enrichment across co-expression categories",
-       subtitle = "Fisher's exact test, BH-adjusted; * padj<0.05 ** <0.01 *** <0.001") +
+       subtitle = "Fisher's exact test, BH-adjusted across the five co-expression categories; * padj<0.05 ** <0.01 *** <0.001") +
   theme_paper(base_size = 10, major_y = FALSE) +
   theme(axis.text.x = element_text(angle = 20, hjust = 1))
 
