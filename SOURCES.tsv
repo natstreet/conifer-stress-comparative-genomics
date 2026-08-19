@@ -22,8 +22,8 @@
 #          Kalman FigShare deposit remains embargoed (the popgen/epigenetics inputs are Kalman-only).
 #   bioRxiv  Rodriguez et al. wood-formation cliques  bioRxiv doi:10.1101/2025.06.28.661522
 #
-# NOTE (verify before release): the this-study/32593647 vs Kalman/28737623 split below is my best mapping; please
-# confirm which deposit each archive actually lives in, since only you control the deposits.
+# NOTE: the this-study/32593647 vs Kalman/28737623 deposit split below is confirmed (2026-08). N0 and the
+# population-genomic inputs are in the Kalman deposit (28737623), which will be public by publication.
 #
 path_or_glob	description	deposit	citation_or_doi
 # ── this-study/32593647 this study — expression, DE, network, annotation, orthology, metadata ──────────────
