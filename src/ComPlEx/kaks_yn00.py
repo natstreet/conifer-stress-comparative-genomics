@@ -150,5 +150,16 @@ def main():
                     fh.flush()
     print(f"wrote {n} new rows (had {len(done)} done) -> {a.out}")
 
+    # Normalise the output to EXACTLY the current --pairs set, deterministically ordered. Resume above
+    # appends and never removes, so a stale pre-existing output would otherwise keep orphan pairs from an
+    # older --pairs list (e.g. a superseded backbone). Sorting also makes the row order reproducible
+    # regardless of the parallel completion order.
+    valid = set(zip(pairs["pa_gene"], pairs["ps_gene"]))
+    out = pd.read_csv(a.out, sep="\t")
+    out = out[[(g1, g2) in valid for g1, g2 in zip(out.pa_gene, out.ps_gene)]]
+    out = out.drop_duplicates(subset=["pa_gene", "ps_gene"]).sort_values(["pa_gene", "ps_gene"])
+    out.to_csv(a.out, sep="\t", index=False)
+    print(f"normalised output to {len(out)} pairs (== current --pairs set, sorted)")
+
 if __name__ == "__main__":
     main()
