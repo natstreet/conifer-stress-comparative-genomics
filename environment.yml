@@ -31,7 +31,8 @@ dependencies:
   # (If the pipeline is switched to canonical PAML yn00, this dependency becomes non-critical.)
   - biopython>=1.79,<2        # verified reproducing with 1.87
   # ── Bioinformatics tools ──
-  - paml=4.10.10              # yn00 — canonical Yang & Nielsen (2000) dN/dS (cross_species_dnds)
+  - paml=4.10.10              # yn00 (cross_species_dnds) + codeml M0 (dN/dS robustness supplementary)
+  - prank                     # codon-aware alignment for the dN/dS robustness supplementary (dnds_robustness_subsample)
   - meme                      # fimo — CHS3 / promoter TF-motif scan (Fig 6)
   - mafft                     # protein alignment (CHS phylogeny; codon-alignment guide)  [verified 7.526]
   - blast                     # blastp / makeblastdb                                        [verified 2.17.0]
