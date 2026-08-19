@@ -172,7 +172,10 @@ def main():
     rng = random.Random(SEED)
     sample = []
     for c in CATS:
-        rows = pool[c]; rng.shuffle(rows)
+        # sort deterministically first so the seeded draw is independent of the input file's row order
+        # (cross_species_dnds_yn00.tsv is written in parallel, so its row order is not stable run-to-run)
+        rows = sorted(pool[c], key=lambda r: (r[0], r[1]))
+        rng.shuffle(rows)
         sample.extend(rows[:PER_CAT])
     print("stratified subsample (seed %d, target %d/cat):" % (SEED, PER_CAT), flush=True)
     for c in CATS:
