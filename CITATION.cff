@@ -13,5 +13,5 @@ type: software
 license: GPL-3.0
 repository-code: https://github.com/natstreet/conifer-stress-comparative-genomics
 doi: 10.5281/zenodo.21628206
-version: v1.0
-date-released: "2026-07-27"
+version: v1.1
+date-released: "2026-08-20"
