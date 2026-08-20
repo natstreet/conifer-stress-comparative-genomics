@@ -83,6 +83,12 @@ data/annotation/pine_GO_annotation.tsv.gz	Scots pine (Pinsy01) per-gene GO annot
 #   needed ONLY for full from-scratch regeneration: the intermediates they produce (kaks_results.tsv,
 #   cross_species_ks.tsv, cross_species_dnds_yn00.tsv, interspecies_aa_identity.tsv) are DEPOSITED in this study's
 #   genome_analysis_inputs.tar.gz (10.17044/scilifelab.32593647), so standard reproduction does not require them.
+#   NOTE on cross_species_dnds_yn00.tsv: the deposited copy is a SUPERSET (13,538 pairs) that accumulated across
+#   backbone revisions (kaks_yn00.py formerly resume-appended). The reported analysis uses the current 1:1
+#   backbone (integration_backbone_1to1.tsv, 13,523 pairs -> 13,519 usable after dS in (0,5) & dN/dS<10 -> 82.6%
+#   single-copy). reproduce_paper.sh normalises the file to this current backbone on any run (kaks_yn00.py now
+#   post-filters + sorts to the --pairs set), so the canonical set is 13,523; the 15 extra deposited rows are
+#   superseded orphans and should be ignored if the deposited file is read directly without re-running.
 $DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_cds.fa	spruce longest-CDS coding sequences	Kalman/28737623/ENA-assembly	GCA_964035815.1 / 10.17044/scilifelab.28737623
 $DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_aa.fa	spruce longest-isoform proteome	Kalman/28737623/ENA-assembly	GCA_964035815.1
 $DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_sorted.gff3	spruce longest-CDS gene models (TSS)	Kalman/28737623/ENA-assembly	GCA_964035815.1
