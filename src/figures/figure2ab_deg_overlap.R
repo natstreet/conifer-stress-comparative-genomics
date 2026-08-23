@@ -36,8 +36,7 @@ make_upset <- function(mat, title, barfill) {
                             panel.background=element_rect(fill="white", colour=NA))
     )),
     sort_sets=FALSE, width_ratio=0.25
-  ) + labs(title=title) +
-    theme(plot.title=element_text(size=9, face="bold"))
+  )
 }
 
 sp_mat <- make_binary_matrix(list(
@@ -56,11 +55,11 @@ p_pi <- make_upset(pi_mat, "Pine (P. sylvestris)", PAL$pine)
 # (b) P. sylvestris"; wrap_elements makes each UpSet a single taggable unit so the three internal
 # UpSet components are NOT tagged.
 p_combined <- wrap_elements(full = p_sp) / wrap_elements(full = p_pi) +
-  plot_annotation(title="Differentially expressed gene overlap across stress conditions",
-                  tag_levels = list(c("a", "b")),
-                  theme=theme(plot.title=element_text(size=10, face="bold"))) &
+  plot_annotation(tag_levels = list(c("a", "b"))) &
   theme(plot.tag = element_text(size=12, face="bold"))
 
 ggsave(file.path(FIGS,"fig_deg_overlap.pdf"), p_combined,
        width=16, height=18, units="cm", device="pdf")
-message("Saved fig_deg_overlap.pdf (2-panel, no clipping)")
+ggsave(file.path(FIGS,"fig_deg_overlap.png"), p_combined,
+       width=16, height=18, units="cm", dpi=300)
+message("Saved fig_deg_overlap.pdf/.png (2-panel, no clipping)")

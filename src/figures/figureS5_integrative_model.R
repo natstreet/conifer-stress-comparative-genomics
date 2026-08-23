@@ -48,8 +48,7 @@ base <- function(p) p +
   scale_colour_manual(values = KIND_COL, name = NULL) +
   theme_paper(base_size = 10, major_y = FALSE) +
   theme(legend.position = "bottom", strip.placement = "outside",
-        strip.text.y.left = element_text(angle = 0, size = 8, face = "bold"),
-        plot.title = element_text(size = 10, face = "bold"))
+        strip.text.y.left = element_text(angle = 0, size = 8, face = "bold"))
 
 # (a) ordinal odds ratios ------------------------------------------------------
 pa <- base(ggplot(m, aes(odds_ratio, feature, colour = kind)) +
@@ -57,14 +56,14 @@ pa <- base(ggplot(m, aes(odds_ratio, feature, colour = kind)) +
   geom_errorbar(aes(xmin = ci_lo, xmax = ci_hi), orientation = "y", width = 0.22, linewidth = 0.6) +
   geom_point(size = 2.6) +
   scale_x_log10(breaks = c(0.5, 1, 2)) +
-  labs(x = "Odds ratio (per SD, 95% CI)", y = NULL, title = "a  Ordinal regression"))
+  labs(x = "Odds ratio (per SD, 95% CI)", y = NULL))
 
 # (b) standardised linear coefficients -----------------------------------------
 pb <- base(ggplot(m, aes(lm_std_beta, feature, colour = kind)) +
   geom_vline(xintercept = 0, linetype = "dashed", colour = "grey55") +
   geom_errorbar(aes(xmin = lm_ci_lo, xmax = lm_ci_hi), orientation = "y", width = 0.22, linewidth = 0.6) +
   geom_point(size = 2.6) +
-  labs(x = "Standardised coefficient (95% CI)", y = NULL, title = "b  Linear regression")) +
+  labs(x = "Standardised coefficient (95% CI)", y = NULL)) +
   theme(axis.text.y = element_blank(), strip.text.y.left = element_blank())
 
 # (c) random-forest permutation importance (mean over 100 seeds, run-to-run SD) —
@@ -75,19 +74,15 @@ pc <- base(ggplot(m, aes(rf_importance_mean, feature, colour = kind)) +
                     xmax = rf_importance_mean + rf_importance_sd),
                 orientation = "y", width = 0.22, linewidth = 0.5, colour = "grey35") +
   geom_point(size = 2.6) +
-  labs(x = "Permutation importance\n(mean +/- run-to-run SD, 100 forests)", y = NULL, title = "c  Random forest") +
+  labs(x = "Permutation importance\n(mean +/- run-to-run SD, 100 forests)", y = NULL) +
   scale_x_continuous(expand = expansion(mult = c(0.02, 0.10)))) +
   theme(axis.text.y = element_blank(), strip.text.y.left = element_blank(),
         plot.margin = margin(5.5, 9, 5.5, 5.5))
 
 fig <- (pa | pb | pc) +
   plot_layout(guides = "collect", widths = c(1.15, 1, 1)) +
-  plot_annotation(
-    title = "Independent predictors of co-expression conservation breadth",
-    subtitle = "Effects mutually adjusted; three complementary models compared on direction, significance and magnitude",
-    theme = theme(plot.title = element_text(size = 11, face = "bold"),
-                  plot.subtitle = element_text(size = 9))) &
-  theme(legend.position = "bottom")
+  plot_annotation(tag_levels = "a") &
+  theme(legend.position = "bottom", plot.tag = element_text(size = 12, face = "bold"))
 
 ggsave(file.path(OUT, "FigureS5.pdf"), fig, width = 26, height = 12, units = "cm")
 ggsave(file.path(OUT, "FigureS5.png"), fig, width = 26, height = 12, units = "cm", dpi = 300)

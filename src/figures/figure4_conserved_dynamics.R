@@ -44,11 +44,10 @@ p_ov <- ggplot(ov_df, aes(x = "", y = n, fill = part)) +
                     guide = guide_legend(reverse = FALSE)) +
   coord_flip() +
   scale_y_continuous(expand = expansion(mult = c(0, 0.02))) +
-  labs(x = NULL, y = "Conserved co-expressolog orthogroups", title = "a  Stress-set overlap") +
+  labs(x = NULL, y = "Conserved co-expressolog orthogroups") +
   theme_classic(base_size = 10) +
   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.line.y = element_blank(),
-        legend.position = "bottom", legend.text = element_text(size = 8),
-        plot.title = element_text(face = "bold", size = 11))
+        legend.position = "bottom", legend.text = element_text(size = 8))
 
 # ── (b) profile-conservation distributions (observed vs null) ────────────────
 long <- rbind(
@@ -61,8 +60,7 @@ p_pc <- ggplot(long, aes(x = r, fill = set)) +
   geom_vline(xintercept = 0, linetype = "dashed", colour = "grey50", linewidth = 0.3) +
   facet_wrap(~stress, ncol = 1) +
   scale_fill_manual(values = c("Observed" = "#2C7FB8", "Shuffled null" = "grey65"), name = NULL) +
-  labs(x = "Spruce-pine expression-profile correlation (needle)", y = "Density",
-       title = "b  Cross-species profile conservation") +
+  labs(x = "Spruce-pine expression-profile correlation (needle)", y = "Density") +
   theme_paper(base_size = 10) + theme(legend.position = "bottom")
 
 # ── (c,d) heatmaps: spruce | pine per tissue, rows split by direction ────────
@@ -97,11 +95,14 @@ make_hm <- function(stress) {
           heatmap_legend_param = list(title_gp = gpar(fontsize = 8), labels_gp = gpar(fontsize = 7)),
           use_raster = FALSE)
 }
-hm_d <- grid.grabExpr(draw(make_hm("drought"), column_title = "c  Drought", column_title_gp = gpar(fontsize = 10, fontface = "bold")))
-hm_c <- grid.grabExpr(draw(make_hm("cold"),    column_title = "d  Cold",    column_title_gp = gpar(fontsize = 10, fontface = "bold")))
+hm_d <- grid.grabExpr(draw(make_hm("drought")))
+hm_c <- grid.grabExpr(draw(make_hm("cold")))
 
-top    <- plot_grid(p_ov, p_pc, ncol = 2, rel_widths = c(1, 1))
-bottom <- plot_grid(hm_d, hm_c, ncol = 2)
+# Panel letters as cowplot tags (a-d), replacing the former in-plot panel titles.
+top    <- plot_grid(p_ov, p_pc, ncol = 2, rel_widths = c(1, 1),
+                    labels = c("a", "b"), label_fontface = "bold", label_size = 12)
+bottom <- plot_grid(hm_d, hm_c, ncol = 2,
+                    labels = c("c", "d"), label_fontface = "bold", label_size = 12)
 fig    <- plot_grid(top, bottom, ncol = 1, rel_heights = c(0.9, 1.3))
 ggsave(file.path(FIGS, "Figure4_conserved_dynamics.pdf"), fig, width = 24, height = 22, units = "cm")
 ggsave(file.path(FIGS, "Figure4_conserved_dynamics.png"), fig, width = 24, height = 22, units = "cm", dpi = 300)

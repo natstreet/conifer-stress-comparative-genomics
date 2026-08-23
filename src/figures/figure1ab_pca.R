@@ -134,14 +134,12 @@ panel_pca <- function(mat_n, mat_r, meta_n, meta_r, pal, species, stress, flip_p
     geom_point(size = 2.2, alpha = 0.9) +
     scale_colour_manual(values = pal, drop = TRUE) +
     scale_shape_manual(values = c(needle = 16, root = 17), name = "Tissue") +
-    labs(title = substitute(italic(sp) ~ ds, list(sp = species, ds = paste("-", stress))),
-         x = sprintf("PC1 (%.1f%%)", res$pct[1]),
+    labs(x = sprintf("PC1 (%.1f%%)", res$pct[1]),
          y = sprintf("PC2 (%.1f%%)", res$pct[2]),
          colour = "Condition") +
     guides(shape = guide_legend(order = 1), colour = guide_legend(order = 2)) +
     theme_bw(base_size = 10) +
-    theme(plot.title = element_text(size = 10, face = "bold"),
-          legend.key.size = unit(0.35, "cm"),
+    theme(legend.key.size = unit(0.35, "cm"),
           legend.text  = element_text(size = 7),
           legend.title = element_text(size = 8))
 }

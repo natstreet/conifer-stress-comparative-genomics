@@ -75,14 +75,13 @@ pa <- ggplot() +
                      breaks=c(0.20,0.30,0.40,0.50),
                      sec.axis=sec_axis(~ d_lo + (. - yl[1])/(yl[2]-yl[1])*(d_hi-d_lo),
                                        name="co-expression network degree")) +
-  labs(x=NULL, tag="a",
-       subtitle="Norway spruce (P. abies): dN/dS (orange) falls and degree (blue) rises with breadth") +
+  labs(x=NULL, tag="a") +
   theme_classic(base_size=10) +
   theme(panel.grid.major.y=element_line(colour="grey92", linewidth=0.3), panel.grid.minor=element_blank(),
         axis.title.y.left=element_text(colour=ORANGE), axis.text.y.left=element_text(colour=ORANGE),
         axis.title.y.right=element_text(colour=BLUE), axis.text.y.right=element_text(colour=BLUE),
         axis.text.x=element_text(size=8, colour="grey20"), axis.line=element_line(colour="grey40"),
-        plot.subtitle=element_text(size=7.3, colour="grey50"), plot.tag=element_text(size=12, face="bold"))
+        plot.tag=element_text(size=12, face="bold"))
 
 # ── PANEL a' (pine): dN/dS vs conservation breadth on the PINE axis ──────────
 # Reciprocal of panel a: dN/dS is the same cross-species (per 1:1 orthologue pair) value, re-keyed on the
@@ -131,14 +130,13 @@ pa_pi <- ggplot() +
                      name="Conservation breadth (conserved co-expressolog comparisons)", expand=expansion(add=0.4)) +
   scale_y_continuous(name=expression(italic(d)[N]/italic(d)[S]~"(median, IQR)"), limits=yl, breaks=c(0.20,0.30,0.40,0.50),
                      sec.axis=sec_axis(~ d_lo_pi + (. - yl[1])/(yl[2]-yl[1])*(d_hi_pi-d_lo_pi), name="co-expression network degree")) +
-  labs(x=NULL, tag="b",
-       subtitle="Scots pine (P. sylvestris): the same dN/dS-degree-breadth axis, reciprocal analysis") +
+  labs(x=NULL, tag="b") +
   theme_classic(base_size=10) +
   theme(panel.grid.major.y=element_line(colour="grey92", linewidth=0.3), panel.grid.minor=element_blank(),
         axis.title.y.left=element_text(colour=ORANGE), axis.text.y.left=element_text(colour=ORANGE),
         axis.title.y.right=element_text(colour=BLUE), axis.text.y.right=element_text(colour=BLUE),
         axis.text.x=element_text(size=8, colour="grey20"), axis.line=element_line(colour="grey40"),
-        plot.subtitle=element_text(size=7.3, colour="grey50"), plot.tag=element_text(size=12, face="bold"))
+        plot.tag=element_text(size=12, face="bold"))
 
 # ── PANEL b: SD enrichment by category, SYMMETRIC across species ──────────────
 # Spruce axis (sd_category_fisher.tsv): shared_SD, spruce_only_SD tested on the spruce co-expression
@@ -171,7 +169,7 @@ sd_panel <- function(dat, tag, sub, cap=NULL) ggplot(dat, aes(cat_lab, log2OR)) 
   scale_fill_manual(values=c("TRUE"="#D55E00","FALSE"="#0072B2"), guide="none") +
   scale_y_continuous(name=expression(log[2]~"(OR vs non-SD)"), breaks=seq(-3,3,1), limits=c(-3.5,3.8)) +
   facet_wrap(~class_lab, nrow=1, labeller=label_value) +
-  labs(x=NULL, tag=tag, subtitle=sub, caption=cap) +
+  labs(x=NULL, tag=tag, caption=cap) +
   theme_classic(base_size=10) +
   theme(strip.text=element_markdown(size=8.5,face="bold"),
         strip.background=element_rect(fill="white",colour=NA),
@@ -179,7 +177,7 @@ sd_panel <- function(dat, tag, sub, cap=NULL) ggplot(dat, aes(cat_lab, log2OR)) 
         axis.text.x=element_text(size=7.5,angle=30,hjust=1), axis.line=element_line(colour="grey40"),
         plot.tag=element_text(size=12,face="bold"),
         plot.caption=element_text(size=7,colour="grey50",hjust=0),
-        plot.subtitle=element_text(size=7.5,colour="grey40",hjust=0), plot.margin=margin(5,5,5,5))
+        plot.margin=margin(5,5,5,5))
 sd$class_lab <- factor(sd$key,
   c("shared_SD P. abies","spruce_only_SD P. abies","shared_SD P. sylvestris","pine_only_SD P. sylvestris"),
   c("Shared SD","*P. abies*-only SD","Shared SD","*P. sylvestris*-only SD"))

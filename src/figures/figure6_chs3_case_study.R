@@ -63,7 +63,6 @@ p_a <- ggplot() +
            size=2.5, colour="grey40", fontface="italic") +
   scale_x_continuous(name="PA_chr09 position (kb)", labels=scales::comma) +
   scale_y_continuous(limits=c(0.2, 2.0), breaks=NULL, name=NULL) +
-  labs(title="a   Genomic locus (chr9)") +
   theme_fig
 
 # ── Panel B: PAV north/south ──────────────────────────────────────────────────
@@ -91,8 +90,7 @@ p_b <- ggplot(pav_df, aes(x=Population, y=n, fill=Status)) +
   facet_wrap(~Gene, nrow=1) +
   scale_fill_manual(values=c("Present"="#4393C3","Absent"="#E0E0E0"), name=NULL) +
   scale_y_continuous(limits=c(0,28), breaks=c(0,13,26)) +
-  labs(title="b   Presence-absence variation (PAV)",
-       x=NULL, y="Individuals") +
+  labs(x=NULL, y="Individuals") +
   theme_fig +
   theme(legend.position="bottom", legend.key.size=unit(0.35,"cm"))
 
@@ -130,8 +128,7 @@ p_c <- ggplot(expr_df, aes(x=Context, y=mean_vst, fill=Gene)) +
   geom_errorbar(aes(ymin=mean_vst-se_vst, ymax=mean_vst+se_vst),
                 position=position_dodge(0.7), width=0.25, linewidth=0.4) +
   scale_fill_manual(values=c("G004115"="#D6604D","G004116"="#4393C3"), name=NULL) +
-  labs(title="c   Mean expression across stress conditions\n    (VST, P. abies seedlings)",
-       x=NULL, y=expression("Mean VST" %+-% "SE")) +
+  labs(x=NULL, y=expression("Mean VST" %+-% "SE")) +
   theme_fig +
   theme(legend.position="bottom", legend.key.size=unit(0.35,"cm"))
 
@@ -145,18 +142,18 @@ motif_summ <- readr::read_tsv(file.path(OUTDIR, "chs3_promoter_motif_summary.tsv
 
 # ── Assemble (a/b/c) ──────────────────────────────────────────────────────────
 p_final <- (p_a | p_b) / p_c +
-  plot_annotation(
-    title    = "CHS3 SD gene pair: PA_chr09_G004115 / PA_chr09_G004116",
-    subtitle = paste0(
-      "dN/dS = ", motif_summ$kaks, " (purifying selection)  |  GWAS: isothermality (bio3)  |  ",
-      "PAV: ", pav_text, "  |  ",
-      "Promoter TF motifs (2 kb): ", motif_summ$jaccard_pct, "% shared (Jaccard)"
-    ),
-    theme = theme(
-      plot.title    = element_text(face="bold", size=11),
-      plot.subtitle = element_text(size=8, colour="grey30")
-    )
-  )
+  plot_annotation(tag_levels = "a") &
+  theme(plot.tag = element_text(face="bold", size=12))
+
+# The former figure-level subtitle carried the key locus statistics; write them to a TSV so the
+# figure legend can quote them reproducibly (values read at run time, not typed into the caption).
+caption_vals <- data.frame(
+  dNdS = motif_summ$kaks,
+  gwas = "isothermality (bio3)",
+  pav = pav_text,
+  promoter_tf_motifs_2kb_jaccard_pct = motif_summ$jaccard_pct)
+write.table(caption_vals, file.path(OUTDIR, "figure6_caption_values.tsv"),
+            sep="\t", row.names=FALSE, quote=FALSE)
 
 out <- file.path(OUTDIR, "chs3_sd_pair_figure")
 ggsave(paste0(out,".pdf"), p_final, width=14, height=7.5, device="pdf")

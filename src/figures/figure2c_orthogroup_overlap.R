@@ -97,8 +97,7 @@ p <- ggplot(long, aes(x = x, y = n, fill = cat)) +
   scale_fill_manual(values = PAL_FIG2C, name = NULL) +
   scale_x_continuous(breaks = tab$gi, labels = glab[tab$group], expand = expansion(add = 0.5)) +
   scale_y_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.10))) +
-  labs(x = NULL, y = "Orthogroups (DEG-hit, shared universe)",
-       title = "Cross-species orthogroup-level DEG overlap") +
+  labs(x = NULL, y = "Orthogroups (DEG-hit, shared universe)") +
   theme_paper(base_size = 11, major_y = TRUE) +
   theme(legend.position = "top")
 
