@@ -51,9 +51,8 @@ tip_font <- ifelse(tr$tip.label %in% CHS3_PAIR, 2, 1)
 
 dir.create(CHS, showWarnings = FALSE, recursive = TRUE)
 pdf(file.path(CHS, "chs3_tree.pdf"), width = 18/2.54, height = 20/2.54)
-par(mar = c(2, 1, 2, 1))
-plot(tr, tip.color = tip_col, font = tip_font, cex = 0.8, no.margin = FALSE,
-     main = "Norway spruce chalcone synthase gene family (OG0000177)")
+par(mar = c(2, 1, 1, 1))
+plot(tr, tip.color = tip_col, font = tip_font, cex = 0.8, no.margin = FALSE)
 nodelabels(supp_lab, frame = "none", adj = c(1.1, -0.3), cex = 0.6, col = "grey30")
 add.scale.bar(cex = 0.7)
 legend("bottomleft", legend = "CHS3 segmental-duplicate pair",

@@ -241,7 +241,8 @@ def main():
         ax.set(xlim=(0, lim), ylim=(0, lim),
                xlabel="dN/dS  (yn00, protein-guided back-translation)",
                ylabel="dN/dS  (codeml M0, PRANK codon-aware alignment)")
-        ax.set_title("Per-pair dN/dS: yn00 vs codeml (n=%d, Spearman rho=%.2f)" % (len(ok), rho_pair), fontsize=9)
+        # No in-plot title (house style): n and per-pair Spearman rho are reported in the caption /
+        # committed summary output, not on the figure.
         ax.legend(fontsize=6, markerscale=1.5, frameon=False)
         fig.tight_layout()
         figdir = "results/final_figures"; os.makedirs(figdir, exist_ok=True)
