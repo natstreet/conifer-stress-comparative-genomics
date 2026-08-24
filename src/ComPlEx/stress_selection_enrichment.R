@@ -41,10 +41,7 @@ both_xpehh_ihs <- xpehh_ihs[signal_type=="xpehh,ihs", pa_gene]  # both signals
 cat(sprintf("  xpehh (any): %d, ihs (any): %d, both: %d\n",
             length(xpehh_genes), length(ihs_genes), length(both_xpehh_ihs)))
 
-# Note: the earlier PCAdapt combined-score gene set (679) and its PCAdapt∩XP-EHH/iHS intersection
-# (319) are intentionally not used here. The final Kalman et al. deposit ships a revised per-PC
-# PCAdapt analysis (PC1/PC2) rather than that combined-score set, and no reported number in this
-# study relied on the PCAdapt sets. Selection enrichment therefore uses the XP-EHH/iHS scans above
+# Note: the PCAdapt gene sets are not used here. Selection enrichment uses the XP-EHH/iHS scans above
 # (deposited as PopGen/gene-id_selected-genes_set-8995.txt) plus the envGWAS sets below.
 
 # envGWAS — per climate variable
@@ -196,7 +193,7 @@ cat(sprintf("   genes with an expression value: %d of %d network nodes; n_cond d
                           tabulate(factor(bm_gene$n_cond, levels=sort(unique(bm_gene$n_cond))))), collapse=" ")))
 print(bm_tab)
 
-# Wilcoxon rank-sum, both-signals vs no-selection background (committed, not inline-only)
+# Wilcoxon rank-sum, both-signals vs no-selection background
 wd <- suppressWarnings(wilcox.test(deg_u[sel_class=="XP-EHH+iHS",deg], deg_u[sel_class=="background",deg]))
 wb <- suppressWarnings(wilcox.test(bm_u[sel_class=="XP-EHH+iHS",bm],   bm_u[sel_class=="background",bm]))
 wilcox_tab <- data.table(metric=c("coexpressolog_degree","baseMean_expression"),

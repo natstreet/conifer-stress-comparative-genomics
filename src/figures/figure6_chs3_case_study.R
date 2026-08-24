@@ -132,11 +132,9 @@ p_c <- ggplot(expr_df, aes(x=Context, y=mean_vst, fill=Gene)) +
   theme_fig +
   theme(legend.position="bottom", legend.key.size=unit(0.35,"cm"))
 
-# ── CHS3 promoter-motif summary (one-line subtitle only; per-motif panel removed) ──
+# ── CHS3 promoter-motif summary ──
 # The FIMO/PlantTFDB proximal-2 kb scan (src/ComPlEx/chs3_promoter_motifs.py, run FIRST)
-# still supplies the compressed one-line CHS3 motif statement (the copies share most motif
-# families). The former per-motif bar chart (old panel d) has been removed — Figure 6 is
-# now three panels a/b/c.
+# supplies the compressed one-line CHS3 motif statement (the copies share most motif families).
 motif_summ <- readr::read_tsv(file.path(OUTDIR, "chs3_promoter_motif_summary.tsv"),
                               show_col_types = FALSE)
 
@@ -145,8 +143,8 @@ p_final <- (p_a | p_b) / p_c +
   plot_annotation(tag_levels = "a") &
   theme(plot.tag = element_text(face="bold", size=12))
 
-# The former figure-level subtitle carried the key locus statistics; write them to a TSV so the
-# figure legend can quote them reproducibly (values read at run time, not typed into the caption).
+# Write the key locus statistics to a TSV so the figure legend can quote them reproducibly
+# (values read at run time, not typed into the caption).
 caption_vals <- data.frame(
   dNdS = motif_summ$kaks,
   gwas = "isothermality (bio3)",

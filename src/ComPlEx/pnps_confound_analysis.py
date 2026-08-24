@@ -61,8 +61,8 @@ kw = kruskal(*[vals[c] for c in CATS])
 cn = mannwhitneyu(vals["conserved"], vals["not_coex"], alternative="two-sided")
 pnps_tab.to_csv(os.path.join(INTEG, "pnps_by_category.tsv"), sep="\t", index=False)
 
-# Emit the two in-text pN/pS-by-category test statistics to a committed cell (previously computed
-# inline but never written): the 5-category Kruskal-Wallis and the conserved-vs-not_coex pairwise test.
+# Write the two pN/pS-by-category test statistics used in the text: the 5-category Kruskal-Wallis
+# and the conserved-vs-not_coex pairwise test.
 pd.DataFrame([{"test": "kruskal_wallis_5cat",              "statistic": kw.statistic, "p_value": kw.pvalue},
               {"test": "mannwhitney_conserved_vs_not_coex", "statistic": cn.statistic, "p_value": cn.pvalue}]
              ).to_csv(os.path.join(INTEG, "pnps_by_category_stats.tsv"), sep="\t", index=False)

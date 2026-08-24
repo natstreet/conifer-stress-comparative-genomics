@@ -33,9 +33,9 @@ CAT_LAB <- c(conserved = "Conserved", cold_specific = "Cold-specific",
 
 fish <- fread(file.path(INTEG, "popgen_category_fisher.tsv"))[signal == "pav"]
 enr  <- fread(file.path(INTEG, "popgen_category_enrichment.tsv"))
-# Significance (asterisks) comes from the ADOPTED 5-test family (PAV x 5 co-expression categories, BH),
-# committed in pav_category_bh.tsv — NOT popgen_category_fisher.tsv's 15-test (gwas+pav+selection) padj,
-# which over-corrects and hid the not_coex result that the main text reports (p_bh = 0.032, survives).
+# Significance (asterisks) comes from the 5-test PAV family (PAV x 5 co-expression categories, BH)
+# in pav_category_bh.tsv, i.e. correction within the PAV hypothesis family rather than the
+# popgen-wide 15-test (gwas+pav+selection) BH in popgen_category_fisher.tsv.
 bh   <- fread(file.path(INTEG, "pav_category_bh.tsv"))
 n_pav <- enr[label == "pav", n_group]     # total PAV genes (95)
 n_bg  <- enr[label == "pav", n_bg]        # non-PAV universe (42956)

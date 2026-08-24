@@ -2,7 +2,7 @@
 ###############################################################################
 # reproduce_paper.sh — single driver that regenerates every figure, table and
 # reported number in van Zalen et al. from the committed scripts + the deposited
-# data (FigShare + ENA genomes). Replaces run_pipeline.sh.
+# data (FigShare + ENA genomes).
 #
 # HOW TO REPRODUCE (see README.md + SOURCES.tsv for the file list and DOIs):
 #   1. Clone this repository (the scripts).
@@ -53,8 +53,7 @@ stage(){ local name="$1"; shift; local t0=$SECONDS
 # genome-input producers (Ka/Ks, dN/dS, promoter FASTA/TE, FIMO) therefore REQUIRE the genome files
 # under DATA_ROOT and a FIMO binary; without them those stages fail loudly (as they should) rather than
 # being silently skipped. The deposited copies of their outputs are a cross-check target, not a trusted
-# input. (A previous stage_cached skip-when-present wrapper masked the cold_root orphan and a
-# hardcoded-path bug from every "clean-room" run; it has been removed.)
+# input.
 rmd(){ "$R" -e "rmarkdown::render('$1', quiet=TRUE)"; }
 
 # Output directory skeleton — created up front so a from-empty run does not fail on a missing
@@ -84,7 +83,7 @@ stage "ComPlExDataPrep"                "$R"      src/ComPlEx/ComPlExDataPrep.R  
 #   src/ComPlEx/ComPlEx.R           — R REFERENCE network implementation; the validated Python port
 #                                     (run_complex_networks.sh) builds the networks the pipeline uses,
 #                                     and no staged script consumes ComPlEx.R's outputs.
-#   src/ComPlEx/run_tfdb_prediction.py — provenance one-off: submits proteomes to the LIVE PlantTFDB
+#   src/ComPlEx/run_tfdb_prediction.py — provenance step: submits proteomes to the LIVE PlantTFDB
 #                                     web service (non-deterministic/external); its TF annotation is
 #                                     deposited and read by figure3. Not part of automated reproduction.
 #   src/ComPlEx/kaks_yn00.py        — runs via run_cross_species_dnds.sh (the cross_species_dnds stage).
@@ -179,10 +178,10 @@ echo "==========================================================================
 echo "reproduce_paper.sh finished: $ok OK, $fail FAILED.${failed_stages:+  failed:$failed_stages}"
 echo "Full log: reproduce_paper.log"
 
-# NOTE: Figure 8 is a hand-drawn schematic (no producer); its underlying numbers come
-# from selection_category_enrichment.tsv (stress_selection_enrichment). Table 1/Table 2
+# NOTE: Figure 7 is a hand-drawn schematic (no producer); its underlying numbers come
+# from the integration result tables (results/integration/). Table 1/Table 2
 # are both produced by conserved_dynamics_go (drought / cold rows). The ComPlEx network
-# layer (the four networks + co_expressologs + weighted_gene_pairs) is now REGENERATED here
+# layer (the four networks + co_expressologs + weighted_gene_pairs) is regenerated here
 # from the VST matrices (build_complex_networks -> cliques_step1 -> cliques_step1b), not loaded
 # from the deposit — the deposited copies are a cross-check target, not a trusted input.
 [ "$fail" -eq 0 ]

@@ -251,7 +251,7 @@ setnames(ks_raw, c("spruce_gene","pine_gene"), c("pa_gene","ps_gene"))
 # Keep cross-species background pairs only; deduplicate to one row per gene pair
 backbone <- ks_raw[pair_type == "background_1to1"][
   !duplicated(paste(pa_gene, ps_gene)),
-  .(hog_id, pa_gene, ps_gene)]   # cross_species_ks is now a pair list only (no NG86 Ka/Ks)
+  .(hog_id, pa_gene, ps_gene)]   # cross_species_ks is a pair list (no NG86 Ka/Ks)
 cat(sprintf("  Backbone: %d cross-species gene pairs (from cross_species_ks.tsv)\n",
             nrow(backbone)))
 

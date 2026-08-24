@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-## pine_sd_category_enrichment.R — reciprocal PINE-axis SD enrichment (co-author review; makes the SD
+## pine_sd_category_enrichment.R — reciprocal PINE-axis SD enrichment (makes the SD
 ## conservation axis symmetric). Mirrors the spruce analysis (integration_analysis.R + enrichment_tests_
 ## extended.R section A) exactly, but on the PINE side: the co-expressolog category is taken from the PINE
 ## gene (Species2) of each cross-species co-expressolog, the universe is the pine expression universe, and

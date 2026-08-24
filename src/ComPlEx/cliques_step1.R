@@ -5,10 +5,8 @@
 # combines them into a single co-expressologs table plus an
 # orthogroup × tissue presence/absence matrix (orthogroup_coexpressolog_presence).
 #
-# Replaces the original cliques_step1.R which loaded a single combined
-# RData file and filtered by Species1/Species2 tissue codes. In the new
-# Python pipeline, each tissue is a separate TSV with gene names (not
-# tissue codes) in the Species1 / Species2 columns.
+# Each tissue is a separate TSV with gene names (not tissue codes) in the
+# Species1 / Species2 columns.
 #
 # Outputs (saved under results/ComPlEx/RData/):
 #   co_expressologs.RData   — combined data frame, one row per gene pair per tissue

@@ -98,7 +98,7 @@ make_hm <- function(stress) {
 hm_d <- grid.grabExpr(draw(make_hm("drought")))
 hm_c <- grid.grabExpr(draw(make_hm("cold")))
 
-# Panel letters as cowplot tags (a-d), replacing the former in-plot panel titles.
+# Panel letters as cowplot tags (a-d).
 top    <- plot_grid(p_ov, p_pc, ncol = 2, rel_widths = c(1, 1),
                     labels = c("a", "b"), label_fontface = "bold", label_size = 12)
 bottom <- plot_grid(hm_d, hm_c, ncol = 2,

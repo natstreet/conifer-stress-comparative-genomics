@@ -3,12 +3,8 @@
 # Reproduces the published 6-panel figure from the raw measurement data.
 # Source data: D. Castro (data/physiology/). Run from AbioticStressConifers/.
 #
-# Fixes over the original Plots.R:
-#   * correct, vectorised mean +/- 95% CI (the original conint() indexed a tibble
-#     by rownames and referenced a global, giving unreliable intervals);
-#   * root-RWC SD was computed from RWC_shoot (copy-paste bug) — corrected;
-#   * panels combined into the single relabelled 6-panel figure used in the paper;
-#   * shared Control/Drought legend + stress-phase colour key.
+# Each panel shows the group mean +/- 95% CI over the experiment timeline, with a shared
+# Control/Drought legend and a stress-phase colour key, composed into the 6-panel figure.
 
 suppressPackageStartupMessages({ library(ggplot2); library(dplyr); library(patchwork) })
 

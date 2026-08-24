@@ -43,8 +43,6 @@ raw_upset <- upset(
     )
   ),
   # Matrix dots: keep UpSet built-in contrast (dark = member, light grey = non-member).
-  # (A previous fixed fill="grey25" painted every dot the same, so members and non-members
-  # were indistinguishable and every column read as fully connected.)
   matrix = intersection_matrix(
     geom = geom_point(size=2.6)
   ) + theme(panel.grid=element_blank()),
@@ -168,7 +166,7 @@ fam_sum <- all_tf|>count(stress,direction,Fam2)|>
   mutate(n_sign=ifelse(direction=="Down",-n,n),
          Fam2=factor(Fam2, names(fam_pal_sub)))
 
-# Correct limits: based on TOTAL stacked height per stress×direction
+# Axis limits based on TOTAL stacked height per stress×direction
 tot_h <- all_tf|>count(stress,direction)
 max_up   <- max(tot_h$n[tot_h$direction=="Up"])
 max_down <- max(tot_h$n[tot_h$direction=="Down"])
@@ -207,7 +205,7 @@ p3c <- ggplot(fam_sum, aes(stress, n_sign, fill=Fam2)) +
   )
 cat("Panel c built\n")
 
-# ── ASSEMBLE with correct tags ─────────────────────────────────────────────────
+# ── ASSEMBLE with panel tags ─────────────────────────────────────────────────
 right_col <- p3b / p3c + plot_layout(heights=c(1,1))
 
 fig3 <- (p3a | right_col) +

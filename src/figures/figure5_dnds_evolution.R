@@ -86,7 +86,7 @@ pa <- ggplot() +
 # ── PANEL a' (pine): dN/dS vs conservation breadth on the PINE axis ──────────
 # Reciprocal of panel a: dN/dS is the same cross-species (per 1:1 orthologue pair) value, re-keyed on the
 # pine gene (ps_gene); conservation breadth keyed on Species2 (pine); pine network degree and pine
-# expression. Stats emitted to committed cells so the annotated pine Spearman is reproducible.
+# expression. Stats are written to a TSV so the annotated pine Spearman is reproducible.
 gb_pi  <- wp[, .(breadth = max(breadth, na.rm=TRUE)), by=.(ps_gene=Species2)]
 deg_pi <- fread(file.path(INTEG,"network_degree_PINE.tsv")); setnames(deg_pi, c("ps_gene","degree"))
 pc <- fread("data/expression/PC_expression.txt"); pd_ <- fread("data/expression/PD_expression.txt")

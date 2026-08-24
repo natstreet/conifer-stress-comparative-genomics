@@ -4,24 +4,21 @@
 # Computes per-gene-pair tissue coverage from the combined co-expressologs
 # table produced by cliques_step1.R.
 #
-# This replaces the igraph max_cliques step in 3_Cliques.Rmd (Steps 1–2).
+# This computes the 2-species equivalent of the clique-based co-expressolog
+# scoring of Rodriguez et al.
 #
 # NOTE on the bipartite clique adaptation:
-#   The original pipeline ran igraph::max_cliques() on a graph where nodes
-#   were (species, gene) combinations across many species-pair comparisons.
-#   Triangles formed because the same gene could appear in nodes from 3+
-#   species and those species pairs all produced co-expressologs.
-#   In this study there are exactly 2 species (spruce and pine); every edge
-#   connects one spruce gene to one pine gene. The resulting graph is strictly
-#   bipartite, and bipartite graphs contain no cliques of size ≥ 3. Running
-#   max_cliques(net, min=3) on these data returns nothing.
-#
-#   The equivalent metric for 2 species / N tissue conditions is tissue
-#   coverage: for each (spruce_gene, pine_gene) pair within an orthogroup,
-#   count how many of the 4 tissue conditions show it as a co-expressolog,
-#   and compute NegLog10CliqueSum = sum(−log10(MaxpVal)) across those tissues.
-#   This directly parallels the original clique-sum scoring and supports the
-#   same conserved / stress-specific / tissue-specific classifications.
+#   The clique method runs igraph::max_cliques() on a graph whose nodes are
+#   (species, gene) combinations across many species-pair comparisons; triangles
+#   form because the same gene can appear in nodes from 3+ species whose pairs all
+#   produce co-expressologs. In this study there are exactly 2 species (spruce and
+#   pine); every edge connects one spruce gene to one pine gene, so the graph is
+#   strictly bipartite and contains no cliques of size ≥ 3 (max_cliques(net, min=3)
+#   returns nothing). The equivalent metric for 2 species / N tissue conditions is
+#   tissue coverage: for each (spruce_gene, pine_gene) pair within an orthogroup,
+#   count how many of the 4 tissue conditions show it as a co-expressolog, and
+#   compute NegLog10CliqueSum = sum(−log10(MaxpVal)) across those tissues. This
+#   yields the same conserved / stress-specific / tissue-specific classifications.
 #
 # Input:  results/ComPlEx/RData/co_expressologs.RData
 # Output: results/ComPlEx/RData/weighted_gene_pairs.RData
@@ -93,7 +90,7 @@ gene_pairs <- gene_pairs %>%
     DroughtSum = rowSums(across(paste0(DROUGHT, "_neglog10"))),
     NeedleSum  = rowSums(across(paste0(NEEDLE,  "_neglog10"))),
     RootSum    = rowSums(across(paste0(ROOT,    "_neglog10"))),
-    # Total NegLog10CliqueSum across all tissues (analogous to original)
+    # Total NegLog10CliqueSum across all tissues
     NegLog10CliqueSum = rowSums(across(paste0(TISSUES, "_neglog10"))),
     n_tissues = rowSums(across(paste0(TISSUES, "_present"))),
     # Best (most significant) MaxpVal across tissues this pair appears in
@@ -164,7 +161,7 @@ cat(sprintf("  Mixed (multiple, not all 4): %d pairs  (%d OGs)\n",
               !gene_pairs$root_specific])))
 
 # ── Best gene pair per orthogroup (lowest best_pval) ─────────────────────────
-# Analogous to slice_min(MaxpVal) in the original cliques_step1.R
+# Keep the record with the minimum MaxpVal per pair.
 best_per_og <- gene_pairs %>%
   group_by(OrthoGroup) %>%
   slice_min(order_by = best_pval, n = 1, with_ties = FALSE) %>%

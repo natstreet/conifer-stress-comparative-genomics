@@ -22,7 +22,7 @@
 #          Kalman FigShare deposit remains embargoed (the popgen/epigenetics inputs are Kalman-only).
 #   bioRxiv  Rodriguez et al. wood-formation cliques  bioRxiv doi:10.1101/2025.06.28.661522
 #
-# NOTE: the this-study/32593647 vs Kalman/28737623 deposit split below is confirmed (2026-08). N0 and the
+# NOTE: the this-study/32593647 vs Kalman/28737623 deposit split is as below. N0 and the
 # population-genomic inputs are in the Kalman deposit (28737623), which will be public by publication.
 #
 path_or_glob	description	deposit	citation_or_doi
@@ -51,8 +51,8 @@ Orthogroups/Phylogenetic_Hierarchical_Orthogroups_N10.tsv.gz	OrthoFinder N10 hie
 Orthogroups/Phylogenetic_Hierarchical_Orthogroups_N0.tsv.gz	OrthoFinder N0 (root) hierarchical orthogroups — all 27 species incl. angiosperm/gymnosperm outgroups; needed for the no_1to1 novel-gain vs lost/diverged vs expanded classification. NOT in this study's deposit; obtain from the Kalman/Ahlgren FigShare Orthogroups/ folder.	Kalman/28737623	10.17044/scilifelab.28737623
 Orthogroups/{spruce,pine}_all_in_duplicated_blocks_PGset.tsv.gz	genes in segmental-duplication blocks (SD gene universe)	this-study/32593647	10.17044/scilifelab.32593647
 Picea_abies__v__Pinus_sylvestris.tsv	OrthoFinder 1:1 spruce-pine ortholog table	this-study/32593647	10.17044/scilifelab.32593647
-data/chs3/chs3_pav_north_south.tsv	CHS3-pair PAV presence counts (Figure 6b); the summary north/south present counts are read from the Kalman PAV origin file below (PopGen/tbl-segregating-pres-abs-pls-da-discretized-CDS-top-loadings.csv.gz: G004115 north26/south0, G004116 north26/south2 — match verified 2026-07-12)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
-Kalman deposit: PopGen/tbl-segregating-pres-abs-pls-da-discretized-CDS-top-loadings.csv.gz	[PAV ORIGIN — provenance only, not placed/read by the pipeline; the pav signal is already baked into sd_popgen_signals.tsv] Spruce population presence-absence variation: 198 top-PLS-DA-loading genes with per-population (north/south) present counts. Sole source of both the Fig 6b CHS3 counts and the Fig 7 SD∩PAV signal (SD universe ∩ these 198 = 95 genes, identical set verified 2026-07-12)	Kalman/28737623	10.17044/scilifelab.28737623
+data/chs3/chs3_pav_north_south.tsv	CHS3-pair PAV presence counts (Figure 6b); the summary north/south present counts are read from the Kalman PAV origin file below (PopGen/tbl-segregating-pres-abs-pls-da-discretized-CDS-top-loadings.csv.gz: G004115 north26/south0, G004116 north26/south2)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
+Kalman deposit: PopGen/tbl-segregating-pres-abs-pls-da-discretized-CDS-top-loadings.csv.gz	[PAV ORIGIN — provenance only, not placed/read by the pipeline; the pav signal is already baked into sd_popgen_signals.tsv] Spruce population presence-absence variation: 198 top-PLS-DA-loading genes with per-population (north/south) present counts. Sole source of both the Fig 6b CHS3 counts and the Fig 7 SD∩PAV signal (SD universe ∩ these 198 = 95 genes)	Kalman/28737623	10.17044/scilifelab.28737623
 data/chs3/chs3_family.faa	CHS gene-family protein sequences (Figure S4 phylogeny input)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
 data/chs3/chs3_family.aln	CHS family MAFFT alignment (Figure S4; regenerable with REBUILD=TRUE + mafft)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
 data/chs3/chs3_family.nwk	CHS family FastTree tree (Figure S4; regenerable with REBUILD=TRUE + FastTree)	this-study/32593647 (curated_inputs.tar.gz)	10.17044/scilifelab.32593647
@@ -62,20 +62,18 @@ data/physiology/metadata.csv	physiology sample metadata (companion to scots_pine
 data/physiology/scots_pine_drought_physiology_source.xlsx	raw source workbook for scots_pine_drought_physiology.csv (provenance; not read by the pipeline; in annotation_and_metadata.tar.gz)	this-study/32593647	10.17044/scilifelab.32593647
 # ── Kalman/28737623 Kalman et al. — population genomics + epigenetics ──────────────────────────────────
 data/popgen/selection_xpehh_ihs_genes.tsv	XP-EHH / iHS positive-selection genes with signal type (gene, then xpehh|ihs|"xpehh,ihs"); = Kalman deposit PopGen/gene-id_selected-genes_set-8995.txt (download and place as this filename)	Kalman/28737623	10.17044/scilifelab.28737623
-# NOTE: the earlier PCAdapt combined-score set (selection_pcadapt_genes.txt) and its PCAdapt∩XP-EHH/iHS
-# intersection (selection_pcadapt_xpehh_ihs_intersection_genes.txt) are no longer used — the final Kalman
-# deposit ships a revised per-PC PCAdapt analysis (PopGen/gene-list_selection_pcadapt_PC{1,2}.uniq.txt) and
-# no reported number here relied on the combined-score set. stress_selection_enrichment.R now uses XP-EHH/iHS + envGWAS only.
+# NOTE: the deposit's PCAdapt gene lists are not used here; stress_selection_enrichment.R draws on the
+# XP-EHH/iHS and envGWAS gene sets only.
 data/popgen/bio{3,7,10,11,18,19}_genes.uniq.txt	envGWAS climate-associated genes per bioclim variable	Kalman/28737623	10.17044/scilifelab.28737623
 data/popgen/pnps_sd_genes.tsv	Norway spruce population-resequencing pN/pS per gene	Kalman/28737623	10.17044/scilifelab.28737623
 data/epigenetics/conserved_TADs_w_ortho_group_pairs.tsv	conserved TAD orthogroup pairs (Hi-C)	Kalman/28737623	10.17044/scilifelab.28737623
 data/epigenetics/spruce_PC1_250kb_chromosome_wide.tsv	Hi-C A/B compartment PC1 (250 kb)	Kalman/28737623	10.17044/scilifelab.28737623
-data/annotation/pine_GO_annotation.tsv.gz	Scots pine (Pinsy01) per-gene GO annotation (eggNOG + InterPro); = Kalman deposit Genome/Pinsy01_functional_annotations.tsv.gz (verified byte-identical 2026-07-12; download and place as this filename)	Kalman/28737623	10.17044/scilifelab.28737623
+data/annotation/pine_GO_annotation.tsv.gz	Scots pine (Pinsy01) per-gene GO annotation (eggNOG + InterPro); = Kalman deposit Genome/Pinsy01_functional_annotations.tsv.gz (download and place as this filename)	Kalman/28737623	10.17044/scilifelab.28737623
 # ── Genome CDS / protein / repeat / TSS files — place under $DATA_ROOT (default ./genome_data) ─
 # Obtain from Kalman/28737623 FigShare and/or the ENA-assembly assemblies. Needed by kaks_within_species_sd.py,
 # cross_species_ks.py, kaks_yn00.py, te_promoter_family_analysis.py, pa_ps_promoter_te_presence.py,
 # run_tfdb_prediction.py, chs3_promoter_motifs.py.
-# PROVENANCE (verified 2026-07-10): the longest-no_TE CDS/AA FASTAs and sorted GFFs below are DERIVED products
+# PROVENANCE: the longest-no_TE CDS/AA FASTAs and sorted GFFs below are DERIVED products
 #   (longest-isoform selection + TE filtering + translation) of the raw Picab02/Pinsy01 genome + annotation.
 #   The Kalman deposit (10.17044/scilifelab.28737623) provides the RAW genome, CDS GFF and repeat annotation but
 #   NOT these processed longest-no_TE FASTAs/GFFs verbatim; regenerate them from the deposited genome+annotation
@@ -83,12 +81,11 @@ data/annotation/pine_GO_annotation.tsv.gz	Scots pine (Pinsy01) per-gene GO annot
 #   needed ONLY for full from-scratch regeneration: the intermediates they produce (kaks_results.tsv,
 #   cross_species_ks.tsv, cross_species_dnds_yn00.tsv, interspecies_aa_identity.tsv) are DEPOSITED in this study's
 #   genome_analysis_inputs.tar.gz (10.17044/scilifelab.32593647), so standard reproduction does not require them.
-#   NOTE on cross_species_dnds_yn00.tsv: the deposited copy is a SUPERSET (13,538 pairs) that accumulated across
-#   backbone revisions (kaks_yn00.py formerly resume-appended). The reported analysis uses the current 1:1
-#   backbone (integration_backbone_1to1.tsv, 13,523 pairs -> 13,519 usable after dS in (0,5) & dN/dS<10 -> 82.6%
-#   single-copy). reproduce_paper.sh normalises the file to this current backbone on any run (kaks_yn00.py now
-#   post-filters + sorts to the --pairs set), so the canonical set is 13,523; the 15 extra deposited rows are
-#   superseded orphans and should be ignored if the deposited file is read directly without re-running.
+#   NOTE on cross_species_dnds_yn00.tsv: the reported analysis uses the 1:1 backbone
+#   (integration_backbone_1to1.tsv, 13,523 pairs -> 13,519 usable after dS in (0,5) & dN/dS<10 -> 82.6%
+#   single-copy). kaks_yn00.py normalises its output to exactly this backbone set, de-duplicated and
+#   sorted, so a from-scratch run yields the 13,523-pair set; if the deposited file is read directly,
+#   restrict it to the backbone pairs.
 $DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_cds.fa	spruce longest-CDS coding sequences	Kalman/28737623/ENA-assembly	GCA_964035815.1 / 10.17044/scilifelab.28737623
 $DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_aa.fa	spruce longest-isoform proteome	Kalman/28737623/ENA-assembly	GCA_964035815.1
 $DATA_ROOT/sprucev2/Picab02_230926_at01_longest_no_TE_sorted.gff3	spruce longest-CDS gene models (TSS)	Kalman/28737623/ENA-assembly	GCA_964035815.1
@@ -99,22 +96,21 @@ $DATA_ROOT/pinev1/Pinsy01_chromosomes_and_unplaced.all_repeats.gff.gz	pine Repea
 # ── External literature datasets ─────────────────────────────────────────────────────────────
 data/wood/wood_clique_genes.xlsx	wood-formation co-expression clique genes = Rodriguez et al. "Supplementary Data 4.xlsx" (download and place as this filename); producer reads sheets "Conserved genes unique", "Conifer-specific genes unique", "Differentiated genes"	Nat-Comms-in-press	Rodriguez et al. "An evo-devo resource for wood: Comparative regulomics across dicot and conifer trees", Nature Communications (in press); preprint bioRxiv 10.1101/2025.06.28.661522
 #
-# ── Provenance note: sd_popgen_signals.tsv (partially un-reconstructable intermediate) ──
+# ── Provenance note: sd_popgen_signals.tsv ──
 # sd_popgen_signals.tsv (deposit root) annotates segmental-duplication (SD) spruce genes with
 # population-genomic signals. Components (provenance):
 #   SD universe : spruce genes in Orthogroups/spruce_all_in_duplicated_blocks_PGset.tsv.gz (11,615; reproducible)
 #   pav signal  : 95 genes = SD universe ∩ the Kalman PAV origin file
 #                 (PopGen/tbl-segregating-pres-abs-pls-da-discretized-CDS-top-loadings.csv.gz, 198 genes).
-#                 Fully reproducible from the deposit: the 95-gene set is identical to the baked pav rows
-#                 (set match verified 2026-07-12) — NOT an un-reconstructable intermediate.
+#                 Fully reproducible from the deposit: the 95-gene set is SD universe ∩ the 198 PAV-origin genes.
 #   gwas signal : SD ∩ union(bio{3,7,10,11,18,19}_genes.uniq.txt) (88; reproducible)
 #   coordinates : gene chrom/midpos from sd_genes_for_plot.tsv
-#   selection   : 96 genes — provenance NOT saved, NOT reconstructable (only 14/96 in
-#                 selection_pcadapt_genes.txt). Generated interactively; no producer exists.
+#   selection   : 96 genes — no producer script; source not fully traceable (only 14/96 appear in the
+#                 deposit's PCAdapt gene list).
 # Manuscript impact: NONE — Fig 7 uses only the pav rows (= pav_in_sd_genes.txt, reproducible);
 # the selection/gwas rows feed only popgen_category_* tables, whose values are not cited in the paper.
 #
-# ── Inputs surfaced by the end-to-end clean-room (2026-07-07) — add to the deposit / obtain ──
+# ── Additional inputs required by the promoter TF-motif scans (obtain / generate as indicated) ──
 # Promoter TF-motif scans (chs3_promoter_motifs.py, run_tfdb_prediction.py) need:
 PlantTFDB_motifs.meme	PlantTFDB binding-site motifs in MEME format	PlantTFDB	http://planttfdb.gao-lab.org/
 Ath_TF_binding_motifs_information.txt	PlantTFDB Arabidopsis TF matrix->family map (companion to PlantTFDB_motifs.meme; read by chs3_promoter_motifs.py)	PlantTFDB	http://planttfdb.gao-lab.org/

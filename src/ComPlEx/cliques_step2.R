@@ -4,10 +4,9 @@
 # Classifies gene pairs and orthogroups into co-expression conservation
 # categories based on tissue coverage.
 #
-# Adapted from the original cliques_step2.R / 3_Cliques.Rmd for the
-# spruce-pine 2-species, 4-tissue design. The original Angio/Gymno/Cross
-# axes (species-clade categories across many species pairs) are replaced
-# by stress (cold / drought) and tissue (needle / root) axes.
+# The categories are defined on stress (cold / drought) and tissue (needle / root)
+# axes — the 2-species, 4-tissue analogue of the clade-based axes used in the
+# clique method of Rodriguez et al.
 #
 # Input:  results/ComPlEx/RData/weighted_gene_pairs.RData
 #         results/ComPlEx/RData/orthogroup_coexpressolog_presence.RData
@@ -28,7 +27,7 @@ cat("Loading weighted_gene_pairs and orthogroup_coexpressolog_presence...\n")
 load(file.path(RDATA_DIR, "weighted_gene_pairs.RData"))   # → weighted_gene_pairs
 load(file.path(RDATA_DIR, "orthogroup_coexpressolog_presence.RData"))    # → orthogroup_coexpressolog_presence
 
-# ── Parameters (analogous to original cliques_step2.R) ──────────────────────
+# ── Parameters ──────────────────────────────────────────────────────────────
 SELECTION_METHOD  <- "SUM"   # "SUM" = NegLog10CliqueSum  |  "PVAL" = best_pval
 TYPE_OF_GENE_SET  <- "c"     # "c" conserved | "cold" cold-specific |
                               # "drought" drought-specific | "needle" needle-specific |
@@ -42,7 +41,7 @@ C_SUM_STRESS <-  5    # minimum NegLog10CliqueSum for stress-specific (2 tissues
 P_VAL        <-  0.01 # best_pval < P_VAL threshold when using PVAL method
 
 # ── Orthogroup-level presence summary ────────────────────────────────────────
-# Mirrors the orthogroup_coexpressolog_presence usage in the original for filtering OGs.
+# Filter orthogroups by co-expressolog presence.
 og_summary <- orthogroup_coexpressolog_presence %>%
   as.data.frame() %>%
   mutate(

@@ -166,7 +166,7 @@ def main():
         w.writeheader()
         w.writerows(rows)
 
-    # Ka/Ks for the pair, read from the YN00 producer output (not hard-coded)
+    # Ka/Ks for the pair, read from the YN00 producer output.
     kaks = "NA"
     if KAKS_FILE.exists():
         with open(KAKS_FILE) as fh:

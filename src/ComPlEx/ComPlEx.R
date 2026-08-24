@@ -68,14 +68,10 @@ if (!file.exists(ortholog_group_RData)){
   load(file = ortholog_group_RData)
 }
 
-# NOTE: the former Arabidopsis gene-symbol annotation join was REMOVED. It read symbols from
-# doc/Orthogroups_130323_predefined_tree.tsv (a DIFFERENT OrthoFinder run) and joined them to the
-# co-expressolog table BY OrthoGroup ID. OrthoFinder numbers orthogroups per run, so those IDs do not
-# correspond to the co-expressolog OGs (from doc/genes_ortholog_categories.tsv) — for shared OG IDs the
-# per-OG Picea gene-count disagreed 73% of the time — meaning Symbol/Name were attached to the wrong
-# orthogroups for the majority of rows. These labels fed no committed table and no reported number. No
-# same-run Arabidopsis source shares the co-expressolog OG namespace (that run is spruce-pine only), so the
-# join is dropped rather than repointed.
+# Arabidopsis gene-symbol annotations are intentionally not joined here: the only available symbol table
+# (doc/Orthogroups_130323_predefined_tree.tsv) is keyed by OrthoFinder orthogroup IDs from a different
+# run, and OrthoFinder numbers orthogroups per run, so those IDs do not correspond to the co-expressolog
+# orthogroups (doc/genes_ortholog_categories.tsv). Joining by orthogroup ID would therefore mislabel genes.
 
 species1_transcription_txt <- here("data/expression", paste0(species1_keyword, "_expression.txt"))
 species2_transcription_txt <- here("data/expression", paste0(species2_keyword, "_expression.txt"))
@@ -122,7 +118,7 @@ cat (length(unique(ortho$OrthoGroup)), " ortholog groups containing:\n",
      sep = "")
 
 ortho <- ortho %>%
-  filter(Species1 %in% species1_expr$Genes & Species2 %in% species2_expr$Genes) #493785 instead of 6M
+  filter(Species1 %in% species1_expr$Genes & Species2 %in% species2_expr$Genes)
 
 species1_expr <- species1_expr[species1_expr$Genes %in% ortho$Species1,]
 species2_expr <- species2_expr[species2_expr$Genes %in% ortho$Species2,]

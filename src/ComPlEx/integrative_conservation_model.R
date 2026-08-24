@@ -80,7 +80,7 @@ fit_set <- function(dat, preds, label) {
   # (bootstrap resampling + random feature selection + the importance permutation), so a single fit gives
   # a noisy, seed-dependent importance. We therefore report the MEAN over 100 forests and quantify the
   # run-to-run (Monte Carlo) spread as the SD, plotted as error bars in Figure S5. Two deliberate choices:
-  #   * num.trees = 1000 (raised from a single 500-tree fit) so each forest is closer to converged and the
+  #   * num.trees = 1000 so each forest is closer to converged and the
   #     per-forest Monte Carlo noise is smaller.
   #   * a FIXED, enumerated seed set (1:100) rather than an unseeded/random draw. This is what makes the
   #     result DETERMINISTICALLY REPRODUCIBLE — anyone re-running gets byte-identical importances — while

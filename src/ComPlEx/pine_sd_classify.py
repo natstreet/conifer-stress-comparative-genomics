@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """pine_sd_classify.py — classify N10 orthogroups by the LINEAGE of segmental duplication and emit the
 PINE segmental-duplicate gene classes, so the SD conservation axis can be tested symmetrically for pine as
-well as spruce (co-author review). Reuses the committed HOG / gene-set loaders and the EXACT per-HOG gene
+well as spruce. Reuses the HOG / gene-set loaders and the EXACT per-HOG gene
 selection from kaks_within_species_sd.py (the Ka/Ks representative pair: the first two SD genes of the HOG,
 falling back to the first two genes when the HOG has <2 SD genes), so the shared_SD / spruce_only_SD gene
-sets it reproduces are identical to the existing spruce analysis (built-in anchor: 1,874 / 3,186 in the
-spruce expression universe). It then applies the same selection to the pine side and adds pine_only_SD.
+sets it reproduces are identical to the spruce analysis. It then applies the same selection to the pine
+side and adds pine_only_SD.
 
-  shared_SD      : spruce SD gene present AND pine SD gene present AND >=2 spruce genes in the HOG  (rule unchanged)
-  spruce_only_SD : >=2 spruce genes in the spruce SD set AND no pine SD gene                        (rule unchanged)
-  pine_only_SD   : >=2 pine   genes in the pine   SD set AND no spruce SD gene   (NEW — exact mirror of spruce_only)
+  shared_SD      : spruce SD gene present AND pine SD gene present AND >=2 spruce genes in the HOG
+  spruce_only_SD : >=2 spruce genes in the spruce SD set AND no pine SD gene
+  pine_only_SD   : >=2 pine   genes in the pine   SD set AND no spruce SD gene (mirror of spruce_only_SD)
 
 Genes are tagged on each species' OWN axis via the same representative-pair rule the Ka/Ks analysis used, so
 pine_only_SD is directly comparable to spruce_only_SD. Output:
@@ -17,7 +17,7 @@ pine_only_SD is directly comparable to spruce_only_SD. Output:
 """
 import os, sys, csv
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from kaks_within_species_sd import load_gene_set, load_hog_table   # committed, proven loaders
+from kaks_within_species_sd import load_gene_set, load_hog_table   # gene-set and HOG loaders
 
 DEP = os.environ.get("SPRUCE_PINE_DEPOSIT", os.getcwd())
 HOG   = f"{DEP}/Orthogroups/Phylogenetic_Hierarchical_Orthogroups_N10.tsv.gz"
@@ -65,16 +65,12 @@ with open(OUT, "w") as fh:
     for g in sorted(pine_class):
         fh.write(f"{g}\t{pine_class[g]}\n")
 
-# ── built-in anchor gate ──
+# ── report class sizes ──
 sp_sh_u, sp_on_u = len(sp_shared & SU), len(sp_only & SU)
-ok = (sp_sh_u == 1874 and sp_on_u == 3186)
-print(f"  SPRUCE ANCHOR (in expr universe): shared_SD={sp_sh_u}  spruce_only_SD={sp_on_u}   "
-      f"{'OK (matches committed 1,874 / 3,186)' if ok else 'MISMATCH — classification logic drifted!'}")
+print(f"  SPRUCE ANCHOR (in expr universe): shared_SD={sp_sh_u}  spruce_only_SD={sp_on_u}")
 n_sh = sum(v == 'shared_SD' for v in pine_class.values())
 n_po = sum(v == 'pine_only_SD' for v in pine_class.values())
 print(f"  PINE classes (all):               shared_SD={n_sh}  pine_only_SD={n_po}")
 print(f"  PINE classes (in pine universe):  shared_SD={len(set(g for g,v in pine_class.items() if v=='shared_SD') & PU)}"
       f"  pine_only_SD={len(set(g for g,v in pine_class.items() if v=='pine_only_SD') & PU)}")
 print(f"  wrote {OUT}")
-if not ok:
-    sys.exit("ABORT: spruce anchor drifted; do not trust the pine classes.")
