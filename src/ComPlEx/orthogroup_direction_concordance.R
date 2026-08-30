@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 ## orthogroup_direction_concordance.R — directional concordance of cross-species DEG orthogroups
-## (Results [27]). Producer for the "% directionally concordant" statistic and its binomial tests.
+## Producer for the "% directionally concordant" statistic and its binomial tests.
 ##
 ## Universe: the SAME shared DEG-orthogroup set as the 'overall' row of Figure 2c — orthogroups
 ## (>=1 Picea AND >=1 Pinus gene in doc/genes_ortholog_categories.tsv) that are DEG-hit in BOTH

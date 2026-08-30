@@ -171,10 +171,10 @@ This installs everything the pipeline uses, so no tools need installing by hand:
 
 ## Citation
 
-If you use this code, please cite the archived software via its Zenodo DOI — all versions:
-[10.5281/zenodo.21628206](https://doi.org/10.5281/zenodo.21628206); this release (v1.0):
-[10.5281/zenodo.21628207](https://doi.org/10.5281/zenodo.21628207) — and the associated paper
-(van Zalen et al.). Machine-readable citation metadata is in [`CITATION.cff`](CITATION.cff).
+If you use this code, please cite the archived software via its Zenodo concept DOI, which always
+resolves to the latest version: [10.5281/zenodo.21628206](https://doi.org/10.5281/zenodo.21628206) —
+and the associated paper (van Zalen et al.). Machine-readable citation metadata is in
+[`CITATION.cff`](CITATION.cff).
 
 ## Contact
 

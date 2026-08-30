@@ -12,7 +12,7 @@
 ## Inputs (all committed / deposited): results/integration/pine_sd_gene_class.tsv (pine_sd_classify.py),
 ##   results/ComPlEx/RData/weighted_gene_pairs.tsv, data/expression/PC_expression.txt + PD_expression.txt.
 ## Outputs: results/integration/pine_sd_category_counts.tsv, pine_sd_coexpression_rate.tsv,
-##          pine_sd_category_fisher.tsv  (the pine [48] ORs/Padj + Fig 5b pine panel).
+##          pine_sd_category_fisher.tsv  (the pine ORs/Padj + Fig 5b pine panel).
 suppressPackageStartupMessages({ library(data.table) })
 
 INTEG <- "results/integration"

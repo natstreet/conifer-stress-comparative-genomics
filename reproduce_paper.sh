@@ -134,7 +134,7 @@ stage "pine_sd_classify"               "$PY_BIO" src/ComPlEx/pine_sd_classify.py
 stage "pine_sd_category_enrichment"    "$R"      src/ComPlEx/pine_sd_category_enrichment.R     # pine SD x category enrichment (Fig 5b pine)
 stage "pav_category_bh"                "$R"      src/ComPlEx/pav_category_bh.R                # PAV BH within the 5-category family [not_coex p_bh]
 stage "gwas_deg_overlap"               "$R"      src/ComPlEx/gwas_deg_overlap.R
-stage "orthogroup_direction_concordance" "$R"    src/ComPlEx/orthogroup_direction_concordance.R  # Fig 2 directional concordance [27]
+stage "orthogroup_direction_concordance" "$R"    src/ComPlEx/orthogroup_direction_concordance.R  # Fig 2 directional concordance
 stage "single_species_deg_fraction"    "$R"      src/ComPlEx/single_species_deg_fraction.R       # single-species DEG fraction 8.5/10.9
 
 # ── CONSERVED DYNAMICS (Fig 4) + GO ENRICHMENT (single shared method) ─────────

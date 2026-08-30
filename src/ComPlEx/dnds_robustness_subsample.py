@@ -9,7 +9,7 @@ This re-estimates a STRATIFIED SUBSAMPLE of 1:1 spruce-pine pairs with two indep
 then compares per-category medians, the dN/dS-vs-conservation-breadth Spearman rho, and the per-pair
 correlation against the yn00 values on the same pairs. Subsample only; fixed seed.
 
-Env overrides: INTEG_DIR, PRANK_BIN, CODEML_BIN, SPRUCE_CDS, PINE_CDS, PER_CAT, SEED, NPROC.
+Env overrides: INTEG_DIR, PRANK_BIN, CODEML_BIN, DATA_ROOT, SPRUCE_CDS, PINE_CDS, PER_CAT, SEED, NPROC.
 """
 import os, sys, gzip, random, subprocess, tempfile, shutil, re, csv, math
 from statistics import median
@@ -17,11 +17,14 @@ from multiprocessing import Pool
 from Bio import SeqIO
 
 I          = os.environ.get("INTEG_DIR", "results/integration")
-PRANK      = os.environ.get("PRANK_BIN", "/Users/rona006/miniforge3/envs/dnds_robust/bin/prank")
+PRANK      = os.environ.get("PRANK_BIN", "prank")
 CODEML     = os.environ.get("CODEML_BIN", "codeml")
-GENOME_DIR = "/Users/rona006/Library/CloudStorage/OneDrive-Umeåuniversitet/work/manuscripts/spruce2/Nature Genetics/RESUBMISSION November 2025/FigShare_NewCompleteSet/Genome"
-SPRUCE_CDS = os.environ.get("SPRUCE_CDS", os.path.join(GENOME_DIR, "Picab02_230926_at01_longest_no_TE_cds.fa.gz"))
-PINE_CDS   = os.environ.get("PINE_CDS",   os.path.join(GENOME_DIR, "Pinsy01_240308_at01_longest_no_TE_cds.fa.gz"))
+# Genome CDS FASTAs resolve under DATA_ROOT (default ./genome_data, as in SOURCES.tsv and the rest of
+# the pipeline): spruce in DATA_ROOT/sprucev2, pine in DATA_ROOT/pinev1. Override any single path with
+# the SPRUCE_CDS / PINE_CDS / DATA_ROOT environment variables.
+DATA_ROOT  = os.environ.get("DATA_ROOT", "genome_data")
+SPRUCE_CDS = os.environ.get("SPRUCE_CDS", os.path.join(DATA_ROOT, "sprucev2", "Picab02_230926_at01_longest_no_TE_cds.fa"))
+PINE_CDS   = os.environ.get("PINE_CDS",   os.path.join(DATA_ROOT, "pinev1",   "Pinsy01_240308_at01_longest_no_TE_cds.fa"))
 PER_CAT    = int(os.environ.get("PER_CAT", "350"))
 SEED       = int(os.environ.get("SEED", "42"))
 NPROC      = int(os.environ.get("NPROC", "6"))

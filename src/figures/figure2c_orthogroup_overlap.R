@@ -60,7 +60,7 @@ rows <- lapply(names(groups), function(g) {
              P = phyper(sh - 1, pp, N - pp, ss, lower.tail = FALSE),
              # log10 of the same one-sided hypergeometric P, computed in log space so the strongest
              # overlaps do not underflow the double P column to 0 (the pooled "overall" row true P is
-             # ~10^-837); this is the committed source for the "P < 10^-300" bound cited in [27].
+             # ~10^-837); this is the committed source for the "P < 10^-300" bound reported in the text.
              log10_P = round(phyper(sh - 1, pp, N - pp, ss, lower.tail = FALSE, log.p = TRUE) / log(10), 1),
              stringsAsFactors = FALSE)
 })
@@ -69,7 +69,7 @@ cat("universe N =", N, "\n"); print(tab, row.names = FALSE)
 
 ## ---- write the overlap stats to a committed table (every cited number has a producer) -----
 dir.create("results/integration", showWarnings = FALSE, recursive = TRUE)
-tab_out <- cbind(universe_N = N, tab)          # N = shared-gene-space universe size (cited in [27])
+tab_out <- cbind(universe_N = N, tab)          # N = shared-gene-space universe size
 write.table(tab_out, "results/integration/fig2c_orthogroup_overlap_stats.tsv",
             sep = "\t", quote = FALSE, row.names = FALSE)
 cat("Wrote results/integration/fig2c_orthogroup_overlap_stats.tsv\n")

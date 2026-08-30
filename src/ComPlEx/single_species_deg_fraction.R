@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 ## single_species_deg_fraction.R — fraction of each species' differentially expressed genes that fall in
 ## SPECIES-EXCLUSIVE (single-species) orthogroups, i.e. DEGs with no orthologue in the other species.
-## Emits the in-text values of Results [89] ("1,027 Norway spruce and 1,461 Scots pine genes, 8.5% and
+## Emits the in-text values ("1,027 Norway spruce and 1,461 Scots pine genes, 8.5% and
 ## 10.9% of the differentially expressed genes of each species").
 ##
 ## Total DEG genes per species = union of that species' four stress-tissue DEG_all sets (the same DEG lists
