@@ -185,11 +185,7 @@ pc <- sd_panel(subset(sd, species=="P. abies"), "c", "Norway spruce SD (spruce c
 pd <- sd_panel(subset(sd, species=="P. sylvestris"), "d", "Scots pine SD (pine co-expression axis)")
 
 # a,b = dN/dS-breadth (spruce | pine);  c,d = SD enrichment (spruce | pine)
-fig5 <- (pa | pa_pi) / (pc | pd) + plot_layout(heights=c(1, 1.05)) +
-  plot_annotation(caption=paste("SD panels (c, d): orange enriched (OR > 1), blue depleted (OR < 1) vs non-SD genes;",
-                                "Fisher exact test, Benjamini-Hochberg; *** padj<0.001 ** <0.01 * <0.05.",
-                                "Each species tested on its own co-expression axis."),
-                  theme=theme(plot.caption=element_text(size=7, colour="grey50", hjust=0)))
+fig5 <- (pa | pa_pi) / (pc | pd) + plot_layout(heights=c(1, 1.05))
 pdf(file.path(OUT,"Figure5.pdf"), width=26/2.54, height=15.5/2.54); print(fig5); dev.off()
 ggsave(file.path(OUT,"Figure5.png"), fig5, width=26/2.54, height=15.5/2.54, dpi=300)
 cat("Figure5.pdf / Figure5.png saved (a-d: dN/dS a|b + SD c|d, spruce/pine)\n")

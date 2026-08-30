@@ -33,7 +33,7 @@ theme_fig <- theme_bw(base_size = 10) +
 locus_df <- tibble(
   gene   = c("G004115", "G004116"),
   pos_mb = c(1096277, 1096424),   # midpoint in bp → label position
-  label  = c("G004115\n(1,096,276-1,096,278 kb)", "G004116\n(1,096,423-1,096,425 kb)"),
+  label  = c("G004115\n(1,096,276-1,096,278 kbp)", "G004116\n(1,096,423-1,096,425 kbp)"),
   fill   = c("#D6604D", "#4393C3"),
   size_kb= c(2.3, 2.0)
 )
@@ -48,20 +48,20 @@ p_a <- ggplot() +
   annotate("rect", xmin=1096423.1, xmax=1096425.2, ymin=0.7, ymax=1.3,
            fill="#4393C3", colour="white") +
   # labels
-  annotate("text", x=1096277, y=1.5, label="G004115\n2.3 kb",
+  annotate("text", x=1096277, y=1.5, label="G004115\n2.3 kbp",
            size=2.8, fontface="bold", colour="#D6604D") +
-  annotate("text", x=1096424, y=1.5, label="G004116\n2.0 kb",
+  annotate("text", x=1096424, y=1.5, label="G004116\n2.0 kbp",
            size=2.8, fontface="bold", colour="#4393C3") +
   # distance bracket
   annotate("segment", x=1096278.1, xend=1096423.1, y=0.5, yend=0.5,
            colour="grey50", linewidth=0.5,
            arrow=arrow(ends="both", length=unit(0.15,"cm"), type="open")) +
-  annotate("text", x=1096350, y=0.38, label="~145 kb", size=2.8, colour="grey40") +
+  annotate("text", x=1096350, y=0.38, label="~145 kbp", size=2.8, colour="grey40") +
   # GWAS label
   annotate("text", x=1096350, y=1.7,
            label="GWAS: isothermality (bio3)  |  both minus strand",
            size=2.5, colour="grey40", fontface="italic") +
-  scale_x_continuous(name="PA_chr09 position (kb)", labels=scales::comma) +
+  scale_x_continuous(name="PA_chr09 position (kbp)", labels=scales::comma) +
   scale_y_continuous(limits=c(0.2, 2.0), breaks=NULL, name=NULL) +
   theme_fig
 
@@ -154,6 +154,8 @@ write.table(caption_vals, file.path(OUTDIR, "figure6_caption_values.tsv"),
             sep="\t", row.names=FALSE, quote=FALSE)
 
 out <- file.path(OUTDIR, "chs3_sd_pair_figure")
-ggsave(paste0(out,".pdf"), p_final, width=14, height=7.5, device="pdf")
-ggsave(paste0(out,".png"), p_final, width=14, height=7.5, dpi=150)
+# Render at ~10.5 in wide (matching the other main figures) so the base_size=10 panel fonts, panel
+# tags and annotations read at the same visual size once the composite is assembled to page width.
+ggsave(paste0(out,".pdf"), p_final, width=10.5, height=5.6, device="pdf")
+ggsave(paste0(out,".png"), p_final, width=10.5, height=5.6, dpi=150)
 cat("Saved", out, ".pdf/.png\n")
