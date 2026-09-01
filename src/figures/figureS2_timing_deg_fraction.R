@@ -129,8 +129,7 @@ p <- ggplot(long, aes(x = interaction(species, xlab), y = n, fill = part)) +
   geom_col(width = 0.85) +
   facet_wrap(~ sampling_point, scales = "free_x", nrow = 2) +
   scale_fill_manual(values = PAL_TIMING, name = NULL) +
-  labs(x = "Species x timepoint", y = "DEGs (gene count)",
-       title = "Per-timepoint DEG fraction in shared orthogroups") +
+  labs(x = "Species x timepoint", y = "DEGs (gene count)") +
   theme_paper(base_size = 10, major_y = TRUE) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 5),
         legend.position = "top")

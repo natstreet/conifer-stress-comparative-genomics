@@ -71,7 +71,6 @@ p <- ggplot(res, aes(x = label, y = OR)) +
   geom_text(aes(label = sig, y = ci_hi), vjust = -0.3, size = 4) +
   scale_y_log10(expand = expansion(mult = c(0.05, 0.18))) +   # headroom so the top asterisk isn't clipped
   labs(x = NULL, y = "Odds ratio (PAV enrichment, log scale)",
-       title = "PAV enrichment across co-expression categories",
        subtitle = "Fisher's exact test, BH-adjusted (5 categories)\n* padj<0.05  ** <0.01  *** <0.001") +
   theme_paper(base_size = 10, major_y = FALSE) +
   theme(axis.text.x = element_text(angle = 20, hjust = 1))
