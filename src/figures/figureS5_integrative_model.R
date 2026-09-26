@@ -6,7 +6,8 @@
 # two complementary integrative models (integrative_conservation_model.R):
 #   (a) proportional-odds ordinal regression — odds ratios, 95% CI  [primary]
 #   (b) standardised linear regression — coefficients, 95% CI       [robustness]
-#   (c) random-forest permutation importance (500 trees, seed 42)   [robustness]
+#   (c) random-forest permutation importance, mean and run-to-run SD over 100 forests
+#       of 1,000 trees (seeds 1-100)                                [robustness]
 # The text states the ordinal estimates are "complemented by linear regression and
 # random-forest importance"; this figure shows all three so that corroboration is
 # visible rather than asserted. Panels share the feature ordering; a predictor is
